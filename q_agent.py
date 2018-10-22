@@ -25,22 +25,14 @@ class QAgent():
         # Third argument is the prefix (including path) for the dcn pre-trained models 
         # for the actions, all modes are files with .model extention and the prefix is
         # concatenated with a number indicating the action:
-        # 0 = open - buy action
-        # 1 = open - sell action
-        # 2 = not-open-buy action
-        # 3 = not-open-sell action
-        # 4 = close-buy action
-        # 5 = close-sell action
-        # 6 = not-close-buy action
-        # 7 = not-close-sell action
+        # 0 = Buy/CloseSell/nopCloseBuy
+        # 1 = Sell/CloseBuy/nopCloseSell
+        # 2 = No Open Buy
+        # 3 = No Open Sell
         model_prefix = sys.argv[2]
 
     ## Load  pretrained models
     def load_action_models(self):
-        test=0
-    
-    ## Evaluate all the action models and select the one with most predicted reward
-    def decide_next_action(self):
         test=0
     
     ## Evaluate all the action models and select the one with most predicted reward
