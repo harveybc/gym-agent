@@ -56,7 +56,7 @@ class QAgent():
         print("action space: {0!r}".format(self.env_v.action_space))
         print("observation space: {0!r}".format(self.env_v.observation_space))
         # read normalization maximum and minimum per feature
-        n_data = genfromtxt(csv_f, delimiter=',')
+        n_data = genfromtxt(self.vs_f, delimiter=',')
         num_ticks = len(n_data)
         self.num_columns = len(my_data[0])
         for i in range(0, self.num_columns-4):
