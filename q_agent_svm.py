@@ -65,7 +65,7 @@ class QAgent():
         num_ticks = len(n_data)
         self.num_columns = len(n_data[0])
         for i in range(0, self.num_columns-4):
-            header_cell = n_data[0,i]
+            header_cell = n_data[i]
             print("header_cell = ", header_cell)
             data = header_cell.split("_")
             num_parts = len(data)
