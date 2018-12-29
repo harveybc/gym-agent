@@ -85,10 +85,10 @@ class QAgent():
             self.model[i] = load(self.model_prefix + str(i) + '.svm') 
         
     ## Evaluate all the action models and select the one with most predicted reward given a marix of historic data as oobsevation
-    def decide_next_action(self, normalizd_observation):
+    def decide_next_action(self, normalized_observation):
         # evaluate all models with the observion data window  
         for i in range(0,4):
-            action[i] = self.model[i].predict(normalizd_observation)
+            action[i] = self.model[i].predict(normalized_observation)
         max_value = max(action)
         max_index = action.index(max_value)
         return max_index
@@ -163,7 +163,8 @@ class QAgent():
             raw_action = self.decide_next_action(normalized_observation)
             action = self.translate_action(info['order_status'], raw_action)
             observation, reward, done, info = self.env_v.step(action)
-            normalized_observation = self.normalize_observation(observation) 
+            normalized_observation = self.normalize_observation(observation)
+            print("normalized_observation = ", normalized_observation)
             score += reward
             #env_v.render()
             if done:
