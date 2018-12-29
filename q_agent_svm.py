@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 import operator
 from numpy import genfromtxt
+import csv
 
 ## \class QAgent
 ## \brief Q-Learning agent that uses an OpenAI gym environment for fx trading 
