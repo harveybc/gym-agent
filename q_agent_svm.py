@@ -82,7 +82,7 @@ class QAgent():
     ## Load  pretrained models
     def load_action_models(self):
         for i in range(0,4):
-            self.model[i] = load(self.svr_rbf, self.model_prefix + str(i) + '.svm') 
+            self.model[i] = load(self.model_prefix + str(i) + '.svm') 
         
     ## Evaluate all the action models and select the one with most predicted reward given a marix of historic data as oobsevation
     def decide_next_action(self, normalizd_observation):
