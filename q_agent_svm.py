@@ -45,7 +45,7 @@ class QAgent():
         # register the gym-forex openai gym environment
         register(
             id='ForexValidationSet-v1',
-            entry_point='gym_forex.envs:ForexEnv4',
+            entry_point='gym_forex.envs:ForexEnv5',
             kwargs={'dataset': self.vs_f,'volume':0.2, 'sl':2000, 'tp':2000,'obsticks':30, 'capital':10000, 'leverage':100}
         )
         # make openai gym environments
