@@ -58,7 +58,7 @@ class QAgent():
         # read normalization maximum and minimum per feature
         n_data = genfromtxt(self.vs_f, delimiter=',')
         num_ticks = len(n_data)
-        self.num_columns = len(my_data[0])
+        self.num_columns = len(n_data[0])
         for i in range(0, self.num_columns-4):
             header_cell = n_data[0,i] 
             data = header_cell.split("_")
