@@ -17,6 +17,7 @@ from sklearn.metrics import mean_squared_error
 import operator
 from numpy import genfromtxt
 import csv
+from sklearn import svm
 
 ## \class QAgent
 ## \brief Q-Learning agent that uses an OpenAI gym environment for fx trading 
@@ -44,6 +45,8 @@ class QAgent():
         self.max_reward = 15
         self.episode_score = []
         self.episode_length = []
+        self.svr_rbf = svm.SVR(kernel='rbf')
+        self.model = [self.svr_rbf] * 4 
         # register the gym-forex openai gym environment
         register(
             id='ForexValidationSet-v1',
