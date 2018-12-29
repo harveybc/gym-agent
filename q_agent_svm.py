@@ -154,6 +154,7 @@ class QAgent():
         hist_scores = []
         observation = self.env_v.reset()
         normalized_observation = agent.normalize_observation(observation) 
+        print("normalized_observation = ", normalized_observation)
         score = 0.0
         step = 0
         while 1:
@@ -164,7 +165,6 @@ class QAgent():
             action = self.translate_action(info['order_status'], raw_action)
             observation, reward, done, info = self.env_v.step(action)
             normalized_observation = self.normalize_observation(observation)
-            print("normalized_observation = ", normalized_observation)
             score += reward
             #env_v.render()
             if done:
