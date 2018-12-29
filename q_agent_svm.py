@@ -44,9 +44,6 @@ class QAgent():
         self.max_reward = 15
         self.episode_score = []
         self.episode_length = []
-        # minimum and maximum per feature for normalization before evaluation in pretrained models
-        self.max = []
-        self.min = []
         # register the gym-forex openai gym environment
         register(
             id='ForexValidationSet-v1',
@@ -67,6 +64,9 @@ class QAgent():
         print("n_data = ", n_data)
         num_ticks = len(n_data)
         self.num_columns = len(n_data[0])
+        # minimum and maximum per feature for normalization before evaluation in pretrained models
+        self.max = [None] * self.num_columns
+        self.min = [None] * self.num_columns
         for i in range(0, self.num_columns-4):
             header_cell = n_data[i]
             print("header_cell = ", header_cell)
