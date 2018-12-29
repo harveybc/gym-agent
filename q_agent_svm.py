@@ -153,6 +153,7 @@ class QAgent():
         # calculate the validation set score
         hist_scores = []
         observation = self.env_v.reset()
+        print("observation = ", observation)
         normalized_observation = agent.normalize_observation(observation) 
         print("normalized_observation = ", normalized_observation)
         score = 0.0
