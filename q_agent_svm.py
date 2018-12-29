@@ -27,7 +27,7 @@ class QAgent():
     def __init__(self):
         # First argument is the validation dataset 
         self.vs_f = sys.argv[1]
-        # Third argument is the prefix (including path) for the dcn pre-trained models 
+        # Second argument is the prefix (including path) for the dcn pre-trained models 
         # for the actions, all modes are files with .svm extention and the prefix is
         # concatenated with a number indicating the action:
         # 0 = Buy/CloseSell/nopCloseBuy
@@ -52,8 +52,8 @@ class QAgent():
         self.env_v = gym.make('ForexValidationSet-v1')
         # Shows the action and observation space from the forex_env, its observation space is
         # bidimentional, so it has to be converted to an array with nn_format() for direct ANN feed. (Not if evaluating with external DQN)
-        print("action space: {0!r}".format(self.env_t.action_space))
-        print("observation space: {0!r}".format(self.env_t.observation_space))
+        print("action space: {0!r}".format(self.env_v.action_space))
+        print("observation space: {0!r}".format(self.env_v.observation_space))
         # read normalization maximum and minimum per feature
         n_data = genfromtxt(csv_f, delimiter=',')
         num_ticks = len(n_data)
