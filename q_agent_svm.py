@@ -28,7 +28,7 @@ class QAgent():
     ## Loads the validation dataset, loads the pre-trained models
     #  initialize forex environment.
     def __init__(self):
-        # First argument is the validation dataset 
+        # First argument is the validation dataset, including headers indicating maximum and minimum per feature
         self.vs_f = sys.argv[1]
         # Second argument is the prefix (including path) for the dcn pre-trained models 
         # for the actions, all modes are files with .svm extention and the prefix is
@@ -38,6 +38,8 @@ class QAgent():
         # 2 = No Open Buy
         # 3 = No Open Sell
         self.model_prefix = sys.argv[2]
+        # third argument is the path of the datasset to be used in the gym environment (not q-datagen generated, without headers) 
+        self.env_f = sys.argv[3]
         # initialize gym-forex env (version 4)
         self.test_episodes = []
         self.generation = 0
@@ -51,7 +53,7 @@ class QAgent():
         register(
             id='ForexValidationSet-v1',
             entry_point='gym_forex.envs:ForexEnv5',
-            kwargs={'dataset': self.vs_f,'volume':0.2, 'sl':2000, 'tp':2000,'obsticks':30, 'capital':10000, 'leverage':100}
+            kwargs={'dataset': self.env_f ,'volume':0.2, 'sl':2000, 'tp':2000,'obsticks':30, 'capital':10000, 'leverage':100}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
