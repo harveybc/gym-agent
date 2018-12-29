@@ -177,5 +177,5 @@ class QAgent():
 # main function 
 if __name__ == '__main__':
     agent = QAgent()
-    agent.load_action_models(self)
+    agent.load_action_models()
     agent.evaluate()
