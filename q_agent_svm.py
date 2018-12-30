@@ -171,14 +171,16 @@ class QAgent():
         #print("normalized_observation = ", normalized_observation)
         score = 0.0
         step = 0
+        order_status=0
         while 1:
             step += 1
             # TODO: verificar estado de orden para seleccionar que accion tomar
             # TODO: es decir, traducir la próxima acción (0-3) a la variable action(buy, sell, nop)
             raw_action = self.decide_next_action(normalized_observation)
-            action = self.translate_action(info['order_status'], raw_action)
+            action = self.translate_action(order_status, raw_action)
             print("raw_action=", raw_action, " action=", action,)
             observation, reward, done, info = self.env_v.step(action)
+            order_status=info['order_status']
             print("order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'])
             normalized_observation = self.normalize_observation(observation)
             score += reward
