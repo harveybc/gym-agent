@@ -62,7 +62,7 @@ class QAgent():
         print("action space: {0!r}".format(self.env_v.action_space))
         print("observation space: {0!r}".format(self.env_v.observation_space))
         # read normalization maximum and minimum per feature
-        with open(self.vs_f) as f:
+        with open(self.vs_f, newline="\n") as f:
             reader = csv.reader(f)
             n_data = next(reader)  # gets the first line
         #n_data = genfromtxt(self.vs_f, delimiter=',', skip_header=1)
