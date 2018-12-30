@@ -101,10 +101,16 @@ class QAgent():
     def normalize_observation(self, observation):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         n_obs = []
-        for i in range(0, self.num_columns-4):
-            for j in observation[i]:
-                # convert each queue  to a list and concatenate all lists
-                n_obs.append((2.0 * (j - self.min[i]) / (self.max[i] - self.min[i])) - 1)
+        num_columns_o = len(observation)
+        # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
+        for i in range (0, num_columns_o):
+            l_obs = list(observation[i])
+            for j in l_obs:
+                n_obs.append(j)
+        print("n_obs_pre = ", n_obs)
+        for c,i in enumerate(n_obs):
+            i=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
+        print("n_obs_post = ", n_obs)
         return n_obs
     
     def translate_action(self, order_status, raw_action):
