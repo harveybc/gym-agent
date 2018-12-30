@@ -64,7 +64,7 @@ class QAgent():
         # read normalization maximum and minimum per feature
         n_data_full = genfromtxt(self.vs_f, delimiter=',',dtype=None,skip_header=0)    
         # read header from vs_f
-        n_data = n_data[0].tolist()
+        n_data = n_data_full[0].tolist()
         self.num_columns = len(n_data[0])
         print("vs_f num_columns = ", self.num_columns)
         # minimum and maximum per feature for normalization before evaluation in pretrained models
