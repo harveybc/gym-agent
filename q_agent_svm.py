@@ -66,8 +66,9 @@ class QAgent():
             reader = csv.reader(f)
             n_data = next(reader)  # gets the first line
         #n_data = genfromtxt(self.vs_f, delimiter=',', skip_header=1)
-        print("n_data = ", n_data)
-        num_ticks = len(n_data)
+        #print("n_data = ", n_data)
+        
+        
         self.num_columns = len(n_data[0])
         # minimum and maximum per feature for normalization before evaluation in pretrained models
         self.max = [None] * self.num_columns
