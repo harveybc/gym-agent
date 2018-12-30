@@ -16,7 +16,6 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 import operator
 from numpy import genfromtxt
-from numpy import loadtxt
 import csv
 from sklearn import svm
 
@@ -63,10 +62,13 @@ class QAgent():
         print("action space: {0!r}".format(self.env_v.action_space))
         print("observation space: {0!r}".format(self.env_v.observation_space))
         # read normalization maximum and minimum per feature
-        n_data_full = loadtxt(self.vs_f, delimiter=',')    
+        # n_data_full = genfromtxt(self.vs_f, delimiter=',',dtype=str,skip_header=0)    
+        with open('some.csv', newline='') as f:
+            reader = csv.reader(f)
+            n_data = next(reader)  # gets the first line
         # read header from vs_f
-        n_data = n_data_full[0].tolist()
-        self.num_columns = len(n_data[0])
+        #n_data = n_data_full[0].tolist()
+        self.num_columns = len(n_data)
         print("vs_f num_columns = ", self.num_columns)
         # minimum and maximum per feature for normalization before evaluation in pretrained models
         self.max = [None] * self.num_columns
