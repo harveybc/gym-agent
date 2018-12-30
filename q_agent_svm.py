@@ -71,7 +71,7 @@ class QAgent():
         self.max = [None] * self.num_columns
         self.min = [None] * self.num_columns
         for i in range(0, self.num_columns-4):
-            header_cell = n_data[i]
+            header_cell = n_data[i].decode("utf-8") 
             print("header_cell = ", header_cell, "type = " ,type(header_cell))
             data = header_cell.split("_")
             num_parts = len(data)
