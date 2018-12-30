@@ -75,7 +75,7 @@ class QAgent():
         self.min = [None] * self.num_columns
         for i in range(0, self.num_columns-4):
             header_cell = n_data[i]
-            print("header_cell = ", header_cell, "type = " ,type(header_cell))
+            #print("header_cell = ", header_cell, "type = " ,type(header_cell))
             data = header_cell.split("_")
             num_parts = len(data)
             self.max[i] = float(data[num_parts-1])
@@ -109,7 +109,7 @@ class QAgent():
                 n_obs.append(j)
         #print("n_obs_pre = ", n_obs)
         for c,i in enumerate(n_obs):
-            print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
+            #print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
             i=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
         return n_obs
