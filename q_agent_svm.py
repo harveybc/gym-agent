@@ -70,6 +70,7 @@ class QAgent():
         
         
         self.num_columns = len(n_data[0])
+        print("vs_f num_columns = ", self.num_columns)
         # minimum and maximum per feature for normalization before evaluation in pretrained models
         self.max = [None] * self.num_columns
         self.min = [None] * self.num_columns
