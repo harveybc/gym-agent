@@ -72,7 +72,7 @@ class QAgent():
         self.min = [None] * self.num_columns
         for i in range(0, self.num_columns-4):
             header_cell = n_data[i]
-            print("header_cell = ", header_cell)
+            print("header_cell = ", header_cell, "type = " ,type(header_cell))
             data = header_cell.split("_")
             num_parts = len(data)
             self.max[i] = float(data[num_parts-1])
