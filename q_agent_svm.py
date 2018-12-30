@@ -62,7 +62,7 @@ class QAgent():
         print("action space: {0!r}".format(self.env_v.action_space))
         print("observation space: {0!r}".format(self.env_v.observation_space))
         # read normalization maximum and minimum per feature
-        n_data_full = genfromtxt(self.vs_f, delimiter=',',dtype=alttype,skip_header=0)    
+        n_data_full = genfromtxt(self.vs_f, delimiter=',',dtype=str,skip_header=0)    
         # read header from vs_f
         n_data = n_data_full[0].tolist()
         self.num_columns = len(n_data[0])
