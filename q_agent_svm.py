@@ -109,6 +109,7 @@ class QAgent():
                 n_obs.append(j)
         print("n_obs_pre = ", n_obs)
         for c,i in enumerate(n_obs):
+            print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
             i=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         print("n_obs_post = ", n_obs)
         return n_obs
