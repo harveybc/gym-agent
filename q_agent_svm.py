@@ -108,7 +108,7 @@ class QAgent():
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         n_obs = []
         num_columns_o = len(observation)
-        print("num_columns_o = ", num_columns_o)
+        #print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
         for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
@@ -117,7 +117,7 @@ class QAgent():
         #print("n_obs_pre = ", n_obs)
         for c,i in enumerate(n_obs):
             #if c < 98:
-            print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
+            #print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
             n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
         return n_obs
