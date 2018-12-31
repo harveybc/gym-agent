@@ -52,10 +52,11 @@ class QAgent():
         self.raw_action = 0
         self.max_index = 0
         # register the gym-forex openai gym environment
+        # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
             id='ForexValidationSet-v1',
             entry_point='gym_forex.envs:ForexEnv5',
-            kwargs={'dataset': self.env_f ,'volume':0.2, 'sl':200, 'tp':200,'obsticks':30, 'capital':10000, 'leverage':100}
+            kwargs={'dataset': self.env_f ,'volume':0.2, 'sl':200, 'tp':200,'obsticks':7, 'capital':10000, 'leverage':100}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
@@ -115,9 +116,9 @@ class QAgent():
                 n_obs.append(j)
         #print("n_obs_pre = ", n_obs)
         for c,i in enumerate(n_obs):
-            if c < 98:
-                print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
-                n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
+            #if c < 98:
+            print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
+            n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
         return n_obs
     
