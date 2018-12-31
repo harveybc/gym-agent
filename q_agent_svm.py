@@ -174,11 +174,17 @@ class QAgent():
         order_status=0
         while 1:
             step += 1
-            # TODO: verificar estado de orden para seleccionar que accion tomar
-            # TODO: es decir, traducir la próxima acción (0-3) a la variable action(buy, sell, nop)
             raw_action = self.decide_next_action(normalized_observation)
             action = self.translate_action(order_status, raw_action)
-            print("raw_action=", raw_action, " action=", action,)
+            #print("raw_action=", raw_action, " action=", action,)
+            # TODO: verificar que datos usados en training sean inguales a los usados en evaluate()
+            #       verificar primera fila de pretrainer ts y primera fila que se envía a svm en evaluate()
+            #       comparar que ambas predicciones den los mismos valores para las 4 acciones
+            # TODO: probar con DCN
+            # TODO: exportar plots de pre-trainer como imagenes
+            # TODO: verificar que fórmulas para cada action reward son correctas, haciendo 
+            #       modelo pre-entrenado que retorna para cada lecctura los valores exáctos de 
+            #       reward de cada acción basado en tabla de training apra simular mejor caso
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
             print("order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
