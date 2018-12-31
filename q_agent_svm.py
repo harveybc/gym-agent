@@ -108,7 +108,7 @@ class QAgent():
         n_obs = []
         num_columns_o = len(observation)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
-        for i in range (0, num_columns_o):
+        for i in range (0, num_columns_o-1):
             l_obs = list(observation[i])   
             for j in l_obs:
                 n_obs.append(j)
