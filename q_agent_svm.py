@@ -192,7 +192,7 @@ class QAgent():
             #       reward de cada acción basado en tabla de training apra simular mejor caso
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
-            print("ra=", raw_action, " a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            print("ra=", self.raw_action, " a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             normalized_observation = self.normalize_observation(observation)
             score += reward
             #env_v.render()
