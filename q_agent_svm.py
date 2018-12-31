@@ -106,9 +106,10 @@ class QAgent():
     def normalize_observation(self, observation):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         n_obs = []
-        num_columns_o = len(observation)
+        num_columns_o = len(observation) - 1
+        print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
-        for i in range (0, num_columns_o-1):
+        for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
             for j in l_obs:
                 n_obs.append(j)
