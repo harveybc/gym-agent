@@ -90,13 +90,13 @@ class QAgent():
     ## Evaluate all the action models and select the one with most predicted reward given a marix of historic data as oobsevation
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observion data window 
-        action = []
+        self.action = []
         vs = np.array(normalized_observation)
         vs_r = np.reshape(vs, (1, -1))
         for i in range(0,4):
-            action.append(self.model[i].predict(vs_r))
-        max_value = max(action)
-        max_index = action.index(max_value)
+            self.action.append(self.model[i].predict(vs_r))
+        max_value = max(self.action)
+        max_index = self.action.index(max_value)
         return max_index
     
     ## normalize the observation matriz, converts it to a list feedable to a pretrained SVM
