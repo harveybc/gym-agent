@@ -49,6 +49,8 @@ class QAgent():
         self.episode_length = []
         self.svr_rbf = svm.SVR(kernel='rbf')
         self.model = [self.svr_rbf] * 4 
+        self.raw_action = 0
+        self.max_index = 0
         # register the gym-forex openai gym environment
         register(
             id='ForexValidationSet-v1',
@@ -96,8 +98,8 @@ class QAgent():
         for i in range(0,4):
             self.action.append(self.model[i].predict(vs_r))
         max_value = max(self.action)
-        max_index = self.action.index(max_value)
-        return max_index
+        self.max_index = self.action.index(max_value)
+        return self.max_index
     
     ## normalize the observation matriz, converts it to a list feedable to a pretrained SVM
     # oldest data is first in dataset and also in observation matrix
@@ -107,12 +109,12 @@ class QAgent():
         num_columns_o = len(observation)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
         for i in range (0, num_columns_o):
-            l_obs = list(observation[i])
+            l_obs = list(observation[i])   
             for j in l_obs:
                 n_obs.append(j)
         #print("n_obs_pre = ", n_obs)
         for c,i in enumerate(n_obs):
-            #print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
+            print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
             n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
         return n_obs
@@ -123,7 +125,7 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # opens buy order
-            if raw_action == 0:
+            if (self.raw_action == 0) and (self.action[self.max_index]>0):
                 act = 1
             # opens buy order
             elif raw_action == 1:
@@ -174,9 +176,9 @@ class QAgent():
         order_status=0
         while 1:
             step += 1
-            raw_action = self.decide_next_action(normalized_observation)
+            self.raw_action = self.decide_next_action(normalized_observation)
             action = self.translate_action(order_status, raw_action)
-            #print("raw_action=", raw_action, " action=", action,)
+            # print("raw_action=", raw_action, " action=", action,)
             # TODO: verificar que datos usados en training sean inguales a los usados en evaluate()
             #       verificar primera fila de pretrainer ts y primera fila que se envía a svm en evaluate()
             #       comparar que ambas predicciones den los mismos valores para las 4 acciones
