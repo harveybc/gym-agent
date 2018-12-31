@@ -56,7 +56,7 @@ class QAgent():
         register(
             id='ForexValidationSet-v1',
             entry_point='gym_forex.envs:ForexEnv5',
-            kwargs={'dataset': self.env_f ,'volume':0.1, 'sl':2000, 'tp':2000,'obsticks':7, 'capital':100000, 'leverage':100}
+            kwargs={'dataset': self.env_f ,'volume':0.1, 'sl':2000, 'tp':200,'obsticks':7, 'capital':100000, 'leverage':100}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
@@ -192,7 +192,7 @@ class QAgent():
             #       reward de cada acción basado en tabla de training apra simular mejor caso
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
-            print("order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            print("ra=", raw_action, " a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             normalized_observation = self.normalize_observation(observation)
             score += reward
             #env_v.render()
