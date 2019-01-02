@@ -130,7 +130,7 @@ class QAgent():
                 max_value = max(action_list)
                 self.max_index = action_list.index(max_value)
                 break
-        print("normalized_observation=", normalized_abservation)
+        print("normalized_observation=", normalized_observation)
         print("a_pattern=", a_pattern, " a_search=", a_search, " index=", index)
         # VOILA!
         return self.max_index
