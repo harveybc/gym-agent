@@ -112,7 +112,9 @@ class QAgent():
         # read the normalized_observation skipping (num_features-1) and sum the values to compare with
         # the sum of the same sum from the validation set.
         a_pattern = 0
+        
         for i in range(0, self.vs_num_columns):
+            print("len(obs)",len(normalized_observation), "i=",i)
             a_pattern = a_pattern + normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
@@ -157,7 +159,7 @@ class QAgent():
             #print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
             n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
-        return n_obs    
+        return n_obs
     
     def translate_action(self, order_status, raw_action):
         # raw_action depends on order_status:  0 nop, -1=sell,1=buy
