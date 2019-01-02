@@ -125,7 +125,8 @@ class QAgent():
                 a_search = a_search + self.vs_data[i, self.obsticks * j]
             # compare the action values and if they match, return the maximum as the selected action
             if a_pattern == a_search:
-                action_list = self.vs_data[i, self.vs_num_columns-4 : self.vs_num_columns].copy()
+                action_list_n = self.vs_data[i, self.vs_num_columns-4 : self.vs_num_columns].copy()
+                action_list = action_list.tolist()
                 max_value = max(action_list)
                 self.max_index = action_list.index(max_value)
                 break
