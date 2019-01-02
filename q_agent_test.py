@@ -114,7 +114,7 @@ class QAgent():
         a_pattern = 0
         num_features = (self.vs_num_columns-4)//self.obsticks
         for i in range(0, num_features):
-            print("len(obs)=",len(normalized_observation), "i=",i)
+            #print("len(obs)=",len(normalized_observation), "i=",i)
             a_pattern = a_pattern + normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
@@ -130,18 +130,12 @@ class QAgent():
                 max_value = max(action_list)
                 self.max_index = action_list.index(max_value)
                 break
-        print("normalized_observation=", normalized_observation)
-        print("a_pattern=", a_pattern, " a_search=", a_search, " index=", index)
+        #print("normalized_observation=", normalized_observation)
+        #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", index)
         # VOILA!
+        self.action = action_list.copy()
         return self.max_index
 
-        vs_r = np.reshape(vs, (1, -1))
-        for i in range(0,4):
-            self.action.append(self.model[i].predict(vs_r))
-        max_value = max(self.action)
-        self.max_index = self.action.index(max_value)
-        return self.max_index
-        
     ## normalize the observation matriz, converts it to a list feedable to a pretrained SVM
     # oldest data is first in dataset and also in observation matrix
     def normalize_observation(self, observation):
