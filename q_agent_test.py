@@ -113,8 +113,8 @@ class QAgent():
         # the sum of the same sum from the validation set.
         a_pattern = 0
         
-        for i in range(0, self.vs_num_columns):
-            print("len(obs)",len(normalized_observation), "i=",i)
+        for i in range(0, (self.vs_num_columns-4)/self.obs_ticks):
+            print("num_columns=",self_vs,"len(obs)=",len(normalized_observation), "i=",i)
             a_pattern = a_pattern + normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
