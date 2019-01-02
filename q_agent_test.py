@@ -120,8 +120,8 @@ class QAgent():
         index = 0
         for i in range(1, self.vs_num_ticks):
             a_search = 0
-            # if there is a match, extract from the validation set the action values
-            if j in range(0, self.vs_num_columns):
+            # do the sum of the values per feature to compare with the q-datagen dataset output
+            for j in range(0, self.vs_num_columns):
                 a_search = a_search + self.vs_data[i, self.obsticks * j]
             # compare the action values and if they match, return the maximum as the selected action
             if a_pattern == a_search:
