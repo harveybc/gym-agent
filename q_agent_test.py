@@ -112,8 +112,8 @@ class QAgent():
         # read the normalized_observation skipping (num_features-1) and sum the values to compare with
         # the sum of the same sum from the validation set.
         a_pattern = 0
-        
-        for i in range(0, (self.vs_num_columns-4)//self.obsticks):
+        num_features = (self.vs_num_columns-4)//self.obsticks
+        for i in range(0, num_features):
             print("len(obs)=",len(normalized_observation), "i=",i)
             a_pattern = a_pattern + normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
@@ -121,7 +121,7 @@ class QAgent():
         for i in range(1, self.vs_num_ticks):
             a_search = 0
             # do the sum of the values per feature to compare with the q-datagen dataset output
-            for j in range(0, self.vs_num_columns):
+            for j in range(0, num_features):
                 a_search = a_search + self.vs_data[i, self.obsticks * j]
             # compare the action values and if they match, return the maximum as the selected action
             if a_pattern == a_search:
