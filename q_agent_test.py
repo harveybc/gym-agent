@@ -63,7 +63,7 @@ class QAgent():
         register(
             id='ForexValidationSet-v1',
             entry_point='gym_forex.envs:ForexEnv5',
-            kwargs={'dataset': self.env_f ,'volume':0.1, 'sl':5000, 'tp':500,'obsticks':self.obsticks, 'capital':100000, 'leverage':100}
+            kwargs={'dataset': self.env_f ,'volume':0.1, 'sl':1000, 'tp':500,'obsticks':self.obsticks, 'capital':100000, 'leverage':100}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
