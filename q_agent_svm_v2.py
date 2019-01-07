@@ -122,7 +122,7 @@ class QAgent():
         for i in range(0,4):
             self.action_list.append(self.model[i].predict(vs_r))
         
-        self.action = action_list.copy()
+        self.action = self.action_list.copy()
         return self.action
 
     ## normalize the observation matriz, converts it to a list feedable to a pretrained SVM
