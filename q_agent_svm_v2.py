@@ -56,7 +56,7 @@ class QAgent():
         self.vs_data = []
         self.vs_num_ticks = 0
         self.vs_num_columns = 0
-        self.obsticks = 20
+        self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
         self.max_TP = 10000
@@ -169,15 +169,11 @@ class QAgent():
                     tp = (1 - self.security_margin)
                 else:
                     tp = self.raw_action[0] * (1 - self.security_margin)
-                # SL
-                if self.raw_action[1] > 1:
+                # SL TODO:PROBANDO CON SL = TP POR dificultad para predecir este valor
+                if self.raw_action[0] > 1:
                     sl = (1 + self.security_margin)
-                    #TODO: Prueba
-                    #sl = tp
                 else:
-                    sl = self.raw_action[1] * (1 + self.security_margin)
-                    #TODO: Prueba
-                    #sl = tp
+                    sl = self.raw_action[0] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
