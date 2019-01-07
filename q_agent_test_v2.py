@@ -122,7 +122,7 @@ class QAgent():
         a_pattern = 0
         num_features = (self.vs_num_columns-4)//self.obsticks
         for i in range(0, num_features):
-            print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
+            # print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
             a_pattern = a_pattern + normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
