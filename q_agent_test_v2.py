@@ -63,8 +63,8 @@ class QAgent():
         self.min_SL = 100
         self.max_SL = 1000
         self.min_volume = 0.0
-        self.max_volume = 0.2
-        self.security_margin = 0.2
+        self.max_volume = 0.02
+        self.security_margin = 0.4
         
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
