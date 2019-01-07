@@ -120,7 +120,9 @@ class QAgent():
         vs = np.array(normalized_observation)
         vs_r = np.reshape(vs, (1, -1))
         for i in range(0,4):
-            self.action_list.append(self.model[i].predict(vs_r))
+            predicted = self.model[i].predict(vs_r)
+            print ("predicted=",predicted)
+            self.action_list.append(predicted[0])
         
         self.action = self.action_list.copy()
         return self.action
