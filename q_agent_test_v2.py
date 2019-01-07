@@ -243,7 +243,7 @@ class QAgent():
         while 1:
             step += 1
             self.raw_action = self.decide_next_action(normalized_observation)
-            action = self.translate_action(order_status, self.raw_action)
+            action = self.transform_action(order_status, self.raw_action)
             # print("raw_action=", raw_action, " action=", action,)
             # TODO: verificar que datos usados en training sean inguales a los usados en evaluate()
             #       verificar primera fila de pretrainer ts y primera fila que se envía a svm en evaluate()
