@@ -59,12 +59,12 @@ class QAgent():
         self.obsticks = 7
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 2000
+        self.max_TP = 10000
         self.min_SL = 100
-        self.max_SL = 2000
+        self.max_SL = 10000
         self.min_volume = 0.0
-        self.max_volume = 0.05
-        self.security_margin = 0.2
+        self.max_volume = 0.5
+        self.security_margin = 0.1
         
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
