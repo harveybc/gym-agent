@@ -59,11 +59,11 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 20000
+        self.max_TP = 2000
         self.min_SL = 100
-        self.max_SL = 20000
+        self.max_SL = 2000
         self.min_volume = 0.0
-        self.max_volume = 0.02
+        self.max_volume = 0.05
         self.security_margin = 0.2
         
         # register the gym-forex openai gym environment
