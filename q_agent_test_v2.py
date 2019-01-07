@@ -187,8 +187,12 @@ class QAgent():
                 # SL
                 if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
+                    #TODO: Prueba
+                    sl = tp
                 else:
                     sl = self.raw_action[1] * (1 + self.security_margin)
+                    #TODO: Prueba
+                    sl = tp
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
@@ -207,8 +211,12 @@ class QAgent():
                 # SL
                 if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
+                    #TODO: Prueba
+                    sl = tp
                 else:
                     sl = dir * self.raw_action[1] * (1 + self.security_margin)
+                    #TODO: Prueba
+                    sl = tp
                 # Volume
                 if self.raw_action[2] < -1:
                     vol = (1 - self.security_margin)
