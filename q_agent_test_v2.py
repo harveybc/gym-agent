@@ -169,12 +169,12 @@ class QAgent():
         # the output actions are: 0=TP,1=SL,2=volume(dInv). 
         # if there is no opened order
         act = []
+        # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
+        dir = 0
+        tp = 0
+        sl = 0
+        vol  = 0.0
         if order_status == 0:
-            # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
-            dir = 0
-            tp = 0
-            sl = 0
-            vol  = 0.0
             # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
             if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
                 # opens buy order  
