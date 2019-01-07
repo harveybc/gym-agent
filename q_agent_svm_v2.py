@@ -170,10 +170,10 @@ class QAgent():
                 else:
                     tp = self.raw_action[0] * (1 - self.security_margin)
                 # SL TODO:PROBANDO CON SL = TP POR dificultad para predecir este valor
-                if self.raw_action[0] > 1:
+                if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = self.raw_action[0] * (1 + self.security_margin)
+                    sl = self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
@@ -190,12 +190,12 @@ class QAgent():
                 else:
                     tp = dir * self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[0] < -1:
+                if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                     # TODO: Prueba
                     # sl = tp
                 else:
-                    sl = dir * self.raw_action[0] * (1 + self.security_margin)
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
                     # TODO: Prueba
                     # sl = tp
                 # Volume
@@ -215,10 +215,10 @@ class QAgent():
                 else:
                     tp = dir * self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[0] < -1:
+                if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = dir * self.raw_action[0] * (1 + self.security_margin)
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] < -1:
                     vol = (1 - self.security_margin)
@@ -236,10 +236,10 @@ class QAgent():
                 else:
                     tp = self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[0] > 1:
+                if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = self.raw_action[0] * (1 + self.security_margin)
+                    sl = self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
