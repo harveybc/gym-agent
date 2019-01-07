@@ -214,6 +214,49 @@ class QAgent():
                     vol = (1 - self.security_margin)
                 else:
                     vol = dir * self.raw_action[2] * (1 - self.security_margin)
+                    
+        if order_status == 1.0:
+            # if TP, SL, dInv and direction son negativos, retorna los valores ajustados con el margen para sell order
+            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
+                # opens buy order  
+                dir = -1
+                # TP
+                if self.raw_action[0] < -1:
+                    tp = (1 - self.security_margin)
+                else:
+                    tp = dir * self.raw_action[0] * (1 - self.security_margin)
+                # SL
+                if self.raw_action[1] < -1:
+                    sl = (1 + self.security_margin)
+                else:
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
+                # Volume
+                if self.raw_action[2] < -1:
+                    vol = (1 - self.security_margin)
+                else:
+                    vol = dir * self.raw_action[2] * (1 - self.security_margin)
+                    
+        if order_status == -1.0:
+            # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
+            if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
+                # opens buy order  
+                dir = 1
+                # TP
+                if self.raw_action[0] > 1:
+                    tp = (1 - self.security_margin)
+                else:
+                    tp = self.raw_action[0] * (1 - self.security_margin)
+                # SL
+                if self.raw_action[1] > 1:
+                    sl = (1 + self.security_margin)
+                else:
+                    sl = self.raw_action[1] * (1 + self.security_margin)
+                # Volume
+                if self.raw_action[2] > 1:
+                    vol = (1 - self.security_margin)
+                else:
+                    vol = self.raw_action[2] * (1 - self.security_margin)    
+            
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp)
