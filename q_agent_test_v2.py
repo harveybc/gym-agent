@@ -296,8 +296,8 @@ class QAgent():
             # TODO: verificar que fórmulas para cada action reward son correctas, haciendo 
             #       modelo pre-entrenado que retorna para cada lecctura los valores exáctos de 
             #       reward de cada acción basado en tabla de training apra simular mejor caso
-            if step > 1:
-                print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            #if step > 1:
+            #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation)
