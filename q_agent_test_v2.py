@@ -185,10 +185,10 @@ class QAgent():
                 else:
                     tp = self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_ > 1:
+                if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = -1*self.raw_action[1] * (1 + self.security_margin)
+                    sl = self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
@@ -196,7 +196,7 @@ class QAgent():
                     vol = self.raw_action[2] * (1 - self.security_margin)
                 
             # if TP, SL, dInv and direction son negativos, retorna los valores ajustados con el margen para sell order
-            if (self.raw_action[0] < 0) and (self.raw_action[1] > 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
+            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
                 # opens sell order  
                 dir = -1
                 # TP
@@ -205,12 +205,12 @@ class QAgent():
                 else:
                     tp = dir * self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[1] > 1:
+                if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 else:
-                    sl = -1*dir * self.raw_action[1] * (1 + self.security_margin)
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 # Volume
@@ -233,7 +233,7 @@ class QAgent():
                 if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = -1*dir * self.raw_action[1] * (1 + self.security_margin)
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] < -1:
                     vol = (1 - self.security_margin)
