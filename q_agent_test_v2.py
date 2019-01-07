@@ -193,7 +193,7 @@ class QAgent():
                 if self.raw_action[2] > 1:
                     vol = self.max_Vol * (1 - self.security_margin)
                 else:
-                    vol = self.raw_action[2] * self.max_Vol * (1 - self.security_margin)
+                    vol = self.raw_action[2] * self.max_volume * (1 - self.security_margin)
                 
             # if TP, SL, dInv and direction son negativos, retorna los valores ajustados con el margen para sell order
             if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
@@ -213,7 +213,7 @@ class QAgent():
                 if self.raw_action[2] < -1:
                     vol = self.max_Vol * (1 - self.security_margin)
                 else:
-                    vol = dir * self.raw_action[2] * self.max_Vol * (1 - self.security_margin)
+                    vol = dir * self.raw_action[2] * self.max_volume * (1 - self.security_margin)
             
             # Create the action list output [tp, sl, vol, dir]
             act.append(tp)
