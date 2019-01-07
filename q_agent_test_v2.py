@@ -62,8 +62,8 @@ class QAgent():
         self.max_TP = 10000
         self.min_SL = 100
         self.max_SL = 10000
-        self.min_Vol = 100
-        self.max_Vol = 10000
+        self.min_volume = 0.0
+        self.max_volume = 0.2
         self.security_margin = 0.2
         
         # register the gym-forex openai gym environment
@@ -71,7 +71,10 @@ class QAgent():
         register(
             id='ForexValidationSet-v1',
             entry_point='gym_forex.envs:ForexEnv6',
-            kwargs={'dataset': self.env_f ,'volume':0.1, 'sl':500, 'tp':1000,'obsticks':self.obsticks, 'capital':100000, 'leverage':100}
+            kwargs={'dataset': self.env_f ,'max_volume':self.max_volume, 'max_sl':self.max_SL, 
+                    'max_tp':self.max_TP, 'min_sl':self.min_SL,
+                    'min_tp':self.min_TP,'obsticks':self.obsticks, 
+            'capital':100000, 'leverage':100, 'num_features': 14}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
@@ -212,11 +215,11 @@ class QAgent():
                 else:
                     vol = dir * self.raw_action[2] * self.max_Vol * (1 - self.security_margin)
             
-            # Create the action list output
-            act.append(dir)
+            # Create the action list output [tp, sl, vol, dir]
             act.append(tp)
             act.append(sl)
-            act.append(vol)    
+            act.append(vol)  
+            act.append(dir)
         return act
     
     ## Evaluate all the steps on the simulation choosing in each step the best 
