@@ -59,11 +59,11 @@ class QAgent():
         self.obsticks = 15
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 10000
+        self.max_TP = 1000
         self.min_SL = 100
-        self.max_SL = 10000
+        self.max_SL = 1000
         self.min_volume = 0.0
-        self.max_volume = 0.02
+        self.max_volume = 0.2
         self.security_margin = 0.2
         
         # register the gym-forex openai gym environment
@@ -235,7 +235,7 @@ class QAgent():
                     vol = (1 - self.security_margin)
                 else:
                     vol = dir * self.raw_action[2] * (1 - self.security_margin)
-                    
+ # TODO: by setting the following to an unreachable condition, only allow close by sl/tp                   
         if order_status == -1.0:
             # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
             if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
