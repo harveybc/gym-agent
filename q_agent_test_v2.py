@@ -176,7 +176,7 @@ class QAgent():
         vol  = 0.0
         if order_status == 0:
             # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
-            if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
+            if (self.raw_action[0] > 0) and (self.raw_action[1] < 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
                 # opens buy order  
                 dir = 1
                 # TP
@@ -185,12 +185,12 @@ class QAgent():
                 else:
                     tp = self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[1] > 1:
+                if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 else:
-                    sl = self.raw_action[1] * (1 + self.security_margin)
+                    sl = -1*self.raw_action[1] * (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 # Volume
@@ -200,8 +200,8 @@ class QAgent():
                     vol = self.raw_action[2] * (1 - self.security_margin)
                 
             # if TP, SL, dInv and direction son negativos, retorna los valores ajustados con el margen para sell order
-            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
-                # opens buy order  
+            if (self.raw_action[0] < 0) and (self.raw_action[1] > 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
+                # opens sell order  
                 dir = -1
                 # TP
                 if self.raw_action[0] < -1:
@@ -209,12 +209,12 @@ class QAgent():
                 else:
                     tp = dir * self.raw_action[0] * (1 - self.security_margin)
                 # SL
-                if self.raw_action[1] < -1:
+                if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 else:
-                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
+                    sl = -1*dir * self.raw_action[1] * (1 + self.security_margin)
                     #TODO: Prueba
                     #sl = tp
                 # Volume
@@ -225,7 +225,7 @@ class QAgent():
  # TODO: by setting the following to an unreachable condition 2.0, only allow close by sl/tp                       
         if order_status == 1:
             # if TP, SL, dInv or direction son negativos, retorna los valores ajustados con el margen para sell order
-            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
+            if (self.raw_action[0] < 0) and (self.raw_action[1] > 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
                 # closes buy order  
                 dir = -1
                 # TP
@@ -237,7 +237,7 @@ class QAgent():
                 if self.raw_action[1] < -1:
                     sl = (1 + self.security_margin)
                 else:
-                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
+                    sl = -1*dir * self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] < -1:
                     vol = (1 - self.security_margin)
@@ -246,7 +246,7 @@ class QAgent():
  # TODO: by setting the following to an unreachable condition -2.0, only allow close by sl/tp                   
         if order_status == -1:
             # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
-            if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
+            if (self.raw_action[0] > 0) and (self.raw_action[1] < 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
                 # closes sell order  
                 dir = 1
                 # TP
