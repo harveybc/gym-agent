@@ -63,7 +63,7 @@ class QAgent():
         self.min_SL = 100
         self.max_SL = 10000
         self.min_volume = 0.0
-        self.max_volume = 0.5
+        self.max_volume = 0.1
         self.security_margin = 0.1
         
         # register the gym-forex openai gym environment
