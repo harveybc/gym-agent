@@ -172,7 +172,7 @@ class QAgent():
                 if self.raw_action[1] > 1:
                     sl = (1 + self.security_margin)
                 else:
-                    # todo: modificado por problema de span de prediccion
+                    # TODO: modificado por problema de span de prediccion
                     sl = self.raw_action[0] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
