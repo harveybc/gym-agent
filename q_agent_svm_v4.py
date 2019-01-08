@@ -173,7 +173,7 @@ class QAgent():
                     sl = (1 + self.security_margin)
                 else:
                     # TODO: modificado por problema de span de prediccion
-                    sl = self.raw_action[0] * (1 + self.security_margin)
+                    sl = self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] > 1:
                     vol = (1 - self.security_margin)
@@ -194,7 +194,7 @@ class QAgent():
                     sl = (1 + self.security_margin)
                 else:
                     # TODO: mODIFICADO PAR USAR EL MISMO tp COM SL
-                    sl = dir * self.raw_action[0] * (1 + self.security_margin)
+                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
                 # Volume
                 if self.raw_action[2] < -1:
                     vol = (1 - self.security_margin)
