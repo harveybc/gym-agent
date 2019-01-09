@@ -121,16 +121,27 @@ class QAgent():
         # the sum of the same sum from the validation set.
         a_pattern = 0
         num_features = (self.vs_num_columns-4)//self.obsticks
+        n_p = -1
         for i in range(0, num_features):
+            n_p = n_p * -1
             # print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
-            a_pattern = a_pattern + normalized_observation[self.obsticks * i]
+            if n_p == 1:            
+                a_pattern = a_pattern + normalized_observation[self.obsticks * i]
+            else:
+                a_pattern = a_pattern * normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
+        
         for i in range(1, self.vs_num_ticks):
             a_search = 0
+            n_p = -1
             # do the sum of the values per feature to compare with the q-datagen dataset output
             for j in range(0, num_features):
-                a_search = a_search + self.vs_data[i, self.obsticks * j]
+                n_p = n_p * -1
+                if n_p == 1:
+                    a_search = a_search + self.vs_data[i, self.obsticks * j]
+                else:
+                    a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if a_pattern == a_search:
                 action_list_n = self.vs_data[i, self.vs_num_columns-4 : self.vs_num_columns].copy()
