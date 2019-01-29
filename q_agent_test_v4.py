@@ -112,7 +112,7 @@ class QAgent():
         self.vs_num_ticks = len(self.vs_data)
         self.vs_num_columns = len(self.vs_data[0])
 
-    ## For an observation for each tick, returns the TP, SL, volume ands direction(+1 buy, -1 sell) of an optimal order. 
+    ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observation data window 
         self.action = []
@@ -177,8 +177,9 @@ class QAgent():
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
     ## increase the SL in the sec_margin% and decrease the TP in the same %margin, volume is also reduced in the %margin  
-    def transform_action(self, order_status, raw_action):
-        # raw_action depends on order_status:  0 nop, -1=sell,1=buy
+    def transform_action(self, order_status):
+        # order_status:  0 nop, -1=sell,1=buy
+    
         # the output actions are: 0=TP,1=SL,2=volume(dInv). 
         # if there is no opened order
         act = []
@@ -187,7 +188,7 @@ class QAgent():
         tp = 0
         sl = 0
         vol  = 0.0
-        #TODO : ADICIONAR ARCCION BASADA EN SEÑAL 16 (MACD signal adelantado)
+        #TODO : ADICIONAR ACCION BASADA EN SEÑAL 16 (MACD signal adelantado)
         if order_status == 0:
             # if TP, SL, dInv and direction son positivos, retora los valores ajustados con el margen para buy order
             if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
