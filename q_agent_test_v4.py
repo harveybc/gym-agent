@@ -155,7 +155,7 @@ class QAgent():
         self.action = action_list.copy()
         return self.action
 
-    ## normalize the observation matriz, converts it to a list feedable to a pretrained SVM
+    ## normalize the observation matrix, converts it to a list feedable to a pretrained SVM
     # oldest data is first in dataset and also in observation matrix
     def normalize_observation(self, observation):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
