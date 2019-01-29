@@ -130,6 +130,7 @@ class QAgent():
             if n_p == 1:            
                 a_pattern = a_pattern + normalized_observation[self.obsticks * i]
             else:
+                print("len(normalized_observation)=",len(normalized_observation)," i=",i)
                 a_pattern = a_pattern * normalized_observation[self.obsticks * i]
         #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
         index = 0
