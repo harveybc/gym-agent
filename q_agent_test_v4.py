@@ -60,9 +60,9 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 30000
+        self.max_TP = 3000
         self.min_SL = 100
-        self.max_SL = 30000
+        self.max_SL = 3000
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -179,103 +179,37 @@ class QAgent():
     ## increase the SL in the sec_margin% and decrease the TP in the same %margin, volume is also reduced in the %margin  
     def transform_action(self, order_status):
         # order_status:  0 nop, -1=sell,1=buy
-    
+        # the variable self.raw_action contains the output of decide_next_action, which is an array of 3 values, MACD signal return, RSI return and MACD main - signal >0?
         # the output actions are: 0=TP,1=SL,2=volume(dInv). 
         # if there is no opened order
         act = []
         # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
         dir = 0
-        tp = 0
-        sl = 0
-        vol  = 0.0
-        #TODO : ADICIONAR ACCION BASADA EN SEÑAL 16 (MACD signal adelantado)
+        tp = 0.1
+        sl = 1.0
+        vol  = 1.0
+        # if there is no opened order
         if order_status == 0:
-            # if TP, SL, dInv and direction son positivos, retora los valores ajustados con el margen para buy order
-            if (self.raw_action[0] > 0) and (self.raw_action[1] > 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
+            # si el action[0] > 0, compra, sino vende
+            if (self.raw_action[0] > 0):
                 # opens buy order  
                 dir = 1
-                # TP
-                if self.raw_action[0] > 1:
-                    tp = (1 - self.security_margin)
-                else:
-                    tp = self.raw_action[0] * (1 - self.security_margin)
-                # SL
-                if self.raw_action[1] > 1:
-                    sl = (1 + self.security_margin)
-                else:
-                    sl = self.raw_action[1] * (1 + self.security_margin)
-                # Volume
-                if self.raw_action[2] > 1:
-                    vol = (1 - self.security_margin)
-                else:
-                    vol = self.raw_action[2] * (1 - self.security_margin)
-                
-            # if TP, SL, dInv and direction son negativos, retorna los valores ajustados con el margen para sell order
-            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
-                # opens sell order  
+            else:
                 dir = -1
-                # TP
-                if self.raw_action[0] < -1:
-                    tp = (1 - self.security_margin)
-                else:
-                    tp = dir * self.raw_action[0] * (1 - self.security_margin)
-                # SL
-                if self.raw_action[1] < -1:
-                    sl = (1 + self.security_margin)
-                    #TODO: Prueba
-                    #sl = tp
-                else:
-                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
-                    #TODO: Prueba
-                    #sl = tp
-                # Volume
-                if self.raw_action[2] < -1:
-                    vol = (1 - self.security_margin)
-                else:
-                    vol = dir * self.raw_action[2] * (1 - self.security_margin)
- # TODO: by setting the following to an unreachable condition 2.0, only allow close by sl/tp                       
+        
+        # if there is an existing buy order
         if order_status == 1:
-            # if TP, SL, dInv or direction son negativos, retorna los valores ajustados con el margen para sell order
-            if (self.raw_action[0] < 0) and (self.raw_action[1] < 0) and (self.raw_action[2] < 0) and (self.raw_action[3] < 0):
+            # si action[0] == 0 cierra orden de buy 
+            if (self.raw_action[0] == 0):
                 # closes buy order  
                 dir = -1
-                # TP
-                if self.raw_action[0] < -1:
-                    tp = (1 - self.security_margin)
-                else:
-                    tp = dir * self.raw_action[0] * (1 - self.security_margin)
-                # SL
-                if self.raw_action[1] < -1:
-                    sl = (1 + self.security_margin)
-                else:
-                    sl = dir * self.raw_action[1] * (1 + self.security_margin)
-                # Volume
-                if self.raw_action[2] < -1:
-                    vol = (1 - self.security_margin)
-                else:
-                    vol = dir * self.raw_action[2] * (1 - self.security_margin)
- # TODO: by setting the following to an unreachable condition -2.0, only allow close by sl/tp                   
+               
+        # if there is an existing sell order               
         if order_status == -1:
-            # if TP, SL, dInv and direction son positivos, retorna los valores ajustados con el margen para buy order
-            if (self.raw_action[0] > 0) and (self.raw_action[1]> 0) and (self.raw_action[2] > 0) and (self.raw_action[3] > 0):
+            # if action[0]>0, closes the sell order
+            if (self.raw_action[0] > 0):
                 # closes sell order  
                 dir = 1
-                # TP
-                if self.raw_action[0] > 1:
-                    tp = (1 - self.security_margin)
-                else:
-                    tp = self.raw_action[0] * (1 - self.security_margin)
-                # SL
-                if self.raw_action[1] > 1:
-                    sl = (1 + self.security_margin)
-                else:
-                    sl = self.raw_action[1] * (1 + self.security_margin)
-                # Volume
-                if self.raw_action[2] > 1:
-                    vol = (1 - self.security_margin)
-                else:
-                    vol = self.raw_action[2] * (1 - self.security_margin)    
-            
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp)
@@ -305,7 +239,7 @@ class QAgent():
         while 1:
             step += 1
             self.raw_action = self.decide_next_action(normalized_observation)
-            action = self.transform_action(order_status, self.raw_action)
+            action = self.transform_action(order_status)
             # print("raw_action=", raw_action, " action=", action,)
             # TODO: verificar que datos usados en training sean inguales a los usados en evaluate()
             #       verificar primera fila de pretrainer ts y primera fila que se envía a svm en evaluate()
