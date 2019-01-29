@@ -210,7 +210,7 @@ class QAgent():
             if (self.raw_action[0] > 0):
                 # closes sell order  
                 dir = 1
-            
+             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp)
         act.append(sl)
