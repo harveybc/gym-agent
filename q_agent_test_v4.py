@@ -112,7 +112,7 @@ class QAgent():
         self.vs_num_ticks = len(self.vs_data)
         self.vs_num_columns = len(self.vs_data[0])
 
-    ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal is negative, 1 if its positive. 
+    ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observation data window 
         self.action = []
@@ -146,7 +146,7 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if a_pattern == a_search:
-                action_list_n = self.vs_data[i, self.vs_num_columns-self.num_s : self.vs_num_columns].copy()
+                action_list_n = self.vs_data[i, self.vs_num_columns-3 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
         #print("normalized_observation=", normalized_observation)
