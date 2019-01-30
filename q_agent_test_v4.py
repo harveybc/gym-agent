@@ -23,7 +23,7 @@ import csv
 from sklearn import svm
 from operator import add
 from joblib import dump, load
-
+from sklearn import preprocessing
             
 ## \class QAgent
 ## \brief Q-Learning agent that uses an OpenAI gym environment for fx trading 
@@ -74,7 +74,7 @@ class QAgent():
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
         self.pt = load(self.vs_f+'.powertransformer')
         # load feature-selection mask
-        print("loading feature_selection.SelectPercentile() feature selection mask")
+        print("loading pre-processing feature selection mask")
         self.mask = load(self.vs_f+'.feature_selection_mask')
         
         
