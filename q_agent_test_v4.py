@@ -21,7 +21,10 @@ import operator
 from numpy import genfromtxt
 import csv
 from sklearn import svm
+from operator import add
+from joblib import dump, load
 
+            
 ## \class QAgent
 ## \brief Q-Learning agent that uses an OpenAI gym environment for fx trading 
 ## estimating for each tick, the optimal SL, TP, and Volume.
@@ -66,7 +69,15 @@ class QAgent():
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
-     
+        # load pre-processing settings
+        self.pt = preprocessing.PowerTransformer()
+        print("loading pre-processing.PowerTransformer() settings for the generated dataset")
+        self.pt = load(self.vs_f+'.powertransformer')
+        # load feature-selection mask
+        print("loading feature_selection.SelectPercentile() feature selection mask")
+        self.mask = load(self.vs_f+'.feature_selection_mask')
+        
+        
         
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
@@ -158,7 +169,8 @@ class QAgent():
 
     ## normalize the observation matrix, converts it to a list feedable to a pretrained DcN
     # oldest data is first in dataset and also in observation matrix
-    def normalize_observation(self, observation):
+    # input obs_matrix, prev obs_matrix, output:row
+    def normalize_observation(self, observation, observation_prev):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         n_obs = []
         num_columns_o = len(observation)
@@ -168,24 +180,24 @@ class QAgent():
             l_obs = list(observation[i])   
             for j in l_obs:
                 n_obs.append(j)
-        #print("n_obs_pre = ", n_obs)
-        #print("n_obs_post = ", n_obs)
-        #TODO: concatenate n_obs with its returns
-        # calcula el return usando el valor anterior de cada feature y max,min para headers de output (TODO: VERIFICAR INVERSA DE PowerTransformer Y GUARDAR DATOS RELEVANTES EN LUGAR DE MAX, MIN EN HEADERS DE OUTPUT)
-        for i in range(1, num_ticks):        
-            for j in range(0, num_columns):
-                # asigna valor en matrix para valores retornados
-                if my_data[i-1,j] != 0:
-                    my_data_r[i,j] = (my_data[i,j] - my_data[i-1,j]) 
-                else:
-                    my_data_r[i,j] = (my_data[i,j] - my_data[i-1,j]) 
+        # append list of the returned values 
+        # TODO: Cambiar a recorrido de l_obs restando el anterior y solo usar l_obs_prev para el primer elemento
+        for i in range (0, num_columns_o):
+            l_obs = list(observation[i])   
+            l_obs_prev = list(observation_prev[i])   
+            # l_dif = l_obs - l_obs_prev
+            l_dif = list( map(add, l_obs, l_obs_prev) )
+            for l in l_obs:
+                n_obs.append(l)
 
-        # concatenate the data and the returned values
-        my_data = concatenate((my_data, my_data_r), axis=1)
-        #TODO: load parameters and apply powertransform
-        #TODO: load mask and apply feature selection.
+        #apply pre-processing
+        n_obs = self.pt.transform(n_obs.copy())
         
+        #apply feature selection.
+        n_obs = n_obs[self.mask]
+    
         return n_obs
+    
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
     ## increase the SL in the sec_margin% and decrease the TP in the same %margin, volume is also reduced in the %margin  
@@ -243,7 +255,7 @@ class QAgent():
         hist_scores = []
         observation = self.env_v.reset()
         #print("observation = ", observation)
-        normalized_observation = agent.normalize_observation(observation) 
+        normalized_observation = agent.normalize_observation(observation, observation) 
         #print("normalized_observation = ", normalized_observation)
         score = 0.0
         step = 0
@@ -263,9 +275,10 @@ class QAgent():
             #       reward de cada acción basado en tabla de training apra simular mejor caso
             #if step > 1:
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            observation_prev = observation.copy()
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
-            normalized_observation = self.normalize_observation(observation)
+            normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render()
             if done:
