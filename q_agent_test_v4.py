@@ -189,7 +189,11 @@ class QAgent():
             l_dif = list( map(add, l_obs, l_obs_prev) )
             for l in l_obs:
                 n_obs.append(l)
-
+        
+        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
+        for i in range(0,10):
+            n_obs.append(0)
+                
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         
