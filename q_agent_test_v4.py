@@ -195,8 +195,7 @@ class QAgent():
             n_obs.append(0) 
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
-        n_o = n_obs.tolist()
-        n_o=n_o[0]
+        n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
         
         # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
@@ -207,8 +206,9 @@ class QAgent():
         print("mask=",self.mask)
         print("len(n_o)=",len(n_o))
         print("len(mask)", len(self.mask))
+        n_obs=np.array(n_o)
         
-        n_obs = n_obs[0][self.mask]
+        n_obs = n_obs[self.mask]
     
         return n_obs
     
