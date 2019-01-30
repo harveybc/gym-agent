@@ -208,7 +208,7 @@ class QAgent():
         print("len(n_o)=",len(n_o))
         print("len(mask)", len(self.mask))
         
-        n_obs = n_o[self.mask]
+        n_obs = n_obs[0][self.mask]
     
         return n_obs
     
