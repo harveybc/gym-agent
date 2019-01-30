@@ -202,6 +202,9 @@ class QAgent():
         for i in range(0,9):
             n_o[0].append(0)
         #apply feature selection.
+        print("n_o[0]=",n_o[0])
+        print("mask=",self.mask)
+        
         n_obs = n_o[0][self.mask]
     
         return n_obs
