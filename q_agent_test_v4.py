@@ -156,7 +156,7 @@ class QAgent():
         self.action = action_list.copy()
         return self.action
 
-    ## normalize the observation matrix, converts it to a list feedable to a pretrained SVM
+    ## normalize the observation matrix, converts it to a list feedable to a pretrained DcN
     # oldest data is first in dataset and also in observation matrix
     def normalize_observation(self, observation):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
@@ -169,11 +169,22 @@ class QAgent():
             for j in l_obs:
                 n_obs.append(j)
         #print("n_obs_pre = ", n_obs)
-        for c,i in enumerate(n_obs):
-            #if c < 98:
-            #print("c=",c," i=",i ," min[",c,"]=",self.min[c]," max[",c,"]=",self.max[c])
-            n_obs[c]=((2.0 * (i - self.min[c]) / (self.max[c] - self.min[c])) - 1)
         #print("n_obs_post = ", n_obs)
+        #TODO: concatenate n_obs with its returns
+        # calcula el return usando el valor anterior de cada feature y max,min para headers de output (TODO: VERIFICAR INVERSA DE PowerTransformer Y GUARDAR DATOS RELEVANTES EN LUGAR DE MAX, MIN EN HEADERS DE OUTPUT)
+        for i in range(1, num_ticks):        
+            for j in range(0, num_columns):
+                # asigna valor en matrix para valores retornados
+                if my_data[i-1,j] != 0:
+                    my_data_r[i,j] = (my_data[i,j] - my_data[i-1,j]) 
+                else:
+                    my_data_r[i,j] = (my_data[i,j] - my_data[i-1,j]) 
+
+        # concatenate the data and the returned values
+        my_data = concatenate((my_data, my_data_r), axis=1)
+        #TODO: load parameters and apply powertransform
+        #TODO: load mask and apply feature selection.
+        
         return n_obs
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
