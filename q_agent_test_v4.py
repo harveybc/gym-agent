@@ -223,7 +223,7 @@ class QAgent():
         act = []
         # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
         dir = 0
-        tp = 0.1
+        tp = 1.0
         sl = 1.0
         vol  = 1.0
         # if there is no opened order
