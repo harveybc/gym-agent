@@ -21,7 +21,7 @@ import operator
 from numpy import genfromtxt
 import csv
 from sklearn import svm
-from operator import add
+from operator import add,sub
 from joblib import dump, load
 from sklearn import preprocessing
             
@@ -161,11 +161,11 @@ class QAgent():
                 action_list_n = self.vs_data[i, self.vs_num_columns-3 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
-        print("normalized_observation=", normalized_observation)
-        print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
+        #print("normalized_observation=", normalized_observation)
+        #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         # VOILA!
         self.action = action_list.copy()
-        print("action=",self.action)
+        #print("action=",self.action)
         return self.action
 
     ## normalize the observation matrix, converts it to a list feedable to a pretrained DcN
@@ -187,7 +187,7 @@ class QAgent():
             l_obs = list(observation[i])   
             l_obs_prev = list(observation_prev[i])   
             # l_dif = l_obs - l_obs_prev
-            l_dif = list( map(add, l_obs, l_obs_prev) )
+            l_dif = list( map(sub, l_obs, l_obs_prev) )
             for l in l_obs:
                 n_obs.append(l)
         
