@@ -63,7 +63,7 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 2000
+        self.max_TP = 1500
         self.min_SL = 100
         self.max_SL = 1500
         self.min_volume = 0.0
