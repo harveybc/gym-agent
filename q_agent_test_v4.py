@@ -222,7 +222,7 @@ class QAgent():
         # if there is no opened order
         act = []
         # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
-        dir = 0
+        dire = 0.0
         tp = 1.0
         sl = 1.0
         vol  = 1.0
@@ -231,29 +231,29 @@ class QAgent():
             # si el action[0] > 0, compra, sino vende
             if (self.raw_action[0] > 0):
                 # opens buy order  
-                dir = 1
+                dire = 1.0
             else:
-                dir = -1
+                dire = -1.0
         
         # if there is an existing buy order
         if order_status == 1:
             # si action[0] == 0 cierra orden de buy 
             if (self.raw_action[0] == 0):
                 # closes buy order  
-                dir = -1
+                dire = -1.0
                
         # if there is an existing sell order               
         if order_status == -1:
             # if action[0]>0, closes the sell order
             if (self.raw_action[0] > 0):
                 # closes sell order  
-                dir = 1
+                dire = 1.0
              
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp)
         act.append(sl)
         act.append(vol)  
-        act.append(dir)
+        act.append(dire)
         return act
     
     ## Evaluate all the steps on the simulation choosing in each step the best 
