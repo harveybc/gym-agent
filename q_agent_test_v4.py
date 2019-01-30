@@ -191,7 +191,7 @@ class QAgent():
                 n_obs.append(l)
 
         #apply pre-processing
-        n_obs = self.pt.transform(np.array(n_obs).reshape(-1,1))
+        n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         
         #apply feature selection.
         n_obs = n_obs[self.mask]
