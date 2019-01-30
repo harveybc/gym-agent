@@ -191,12 +191,12 @@ class QAgent():
                 n_obs.append(l)
 
         #apply pre-processing
-        n_obs = self.pt.transform(n_obs.copy().reshape(-1,1))
+        n_obs = self.pt.transform(np.array(n_obs).reshape(-1,1))
         
         #apply feature selection.
         n_obs = n_obs[self.mask]
     
-        return n_obs
+        return n_obs[0]
     
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
