@@ -192,15 +192,19 @@ class QAgent():
         
         # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         for i in range(0,10):
-            n_obs.append(0)
-                
+            n_obs.append(0) 
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         
+        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
+        for i in range(0,9):
+            n_obs.append(0)
         #apply feature selection.
-        n_obs = n_obs[self.mask]
+        n_o = list(n_obs)
+        print("n_o=",n_o)
+        n_obs = n_o[self.mask]
     
-        return n_obs[0]
+        return n_obs
     
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
