@@ -196,13 +196,13 @@ class QAgent():
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_o = n_obs.tolist()
-        print("n_o=",n_o)
+        #print("n_o=",n_o)
         
         # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         for i in range(0,9):
-            n_o.append(0)
+            n_o[0].append(0)
         #apply feature selection.
-        n_obs = n_o[self.mask]
+        n_obs = n_o[0][self.mask]
     
         return n_obs
     
