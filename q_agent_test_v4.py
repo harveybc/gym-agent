@@ -161,7 +161,7 @@ class QAgent():
                 action_list_n = self.vs_data[i, self.vs_num_columns-3 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
-        print("normalized_observation=", normalized_observation)
+        #print("normalized_observation=", normalized_observation)
         print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         # VOILA!
         self.action = action_list.copy()
