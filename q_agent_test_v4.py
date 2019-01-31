@@ -135,7 +135,7 @@ class QAgent():
         # the sum of the same sum from the validation set.
         a_pattern = 0
         # TODO: ERROR: NO COINCIDEN EL RETURN DE ENTRENAMIENTO CON EL CALCULADO EN NORMALIZE OBS
-        num_features = ((self.vs_num_columns//8)-self.num_s)//self.obsticks
+        num_features = (self.vs_num_column-self.num_s)//(4*self.obsticks)
         n_p = -1
         for i in range(0, num_features):
             n_p = n_p * -1
@@ -160,7 +160,7 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if a_pattern == a_search:
-                action_list_n = self.vs_data[i, self.vs_num_columns-6 : self.vs_num_columns].copy()
+                action_list_n = self.vs_data[i, self.vs_num_columns-9 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
         #print("normalized_observation=", normalized_observation)
