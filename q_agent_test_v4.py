@@ -69,6 +69,7 @@ class QAgent():
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
+        self.test_action = 0
         # load pre-processing settings
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
@@ -159,7 +160,7 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if a_pattern == a_search:
-                action_list_n = self.vs_data[i, self.vs_num_columns-3 : self.vs_num_columns].copy()
+                action_list_n = self.vs_data[i, self.vs_num_columns-6 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
         #print("normalized_observation=", normalized_observation)
@@ -231,7 +232,7 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[0] > 0.0):
+            if (self.raw_action[self.test_action] > 0.0):
                 # opens buy order  
                 dire = 1.0
             else:
@@ -240,14 +241,14 @@ class QAgent():
         # if there is an existing buy order
         if order_status == 1:
             # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[0] == 0.0):
+            if (self.raw_action[self.test_action] == 0.0):
                 # closes buy order  
                 dire = -1.0
                
         # if there is an existing sell order               
         if order_status == -1:
             # if action[0]>0, closes the sell order
-            if (self.raw_action[0] > 0.0):
+            if (self.raw_action[self.test_action] > 0.0):
                 # closes sell order  
                 dire = 1.0
              
@@ -303,7 +304,7 @@ class QAgent():
         avg_score = sum(hist_scores) / len(hist_scores)
         print("Validation Set Score = ", avg_score)
         print("*********************************************************")
-        return avg_score     
+        return info['balance'], avg_score     
 
     def show_results(self):
         test=0
@@ -312,4 +313,16 @@ class QAgent():
 if __name__ == '__main__':
     agent = QAgent()
     agent.load_action_models()
-    agent.evaluate()
+    scores = []
+    balances = []
+    for i in range(0, 6):
+        print("Testing signal ",13+i)
+        agent.test_action = i
+        agent.load_action_models()
+        balance,score = agent.evaluate()
+        scores.append(score)
+        balances.append(balance)
+    print("Results:")
+    for i in range(0, 6):
+        print("Signal ", 13+i, " balance=",balances[i], " score=",scores[i])
+        
