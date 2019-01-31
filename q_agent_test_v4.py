@@ -135,7 +135,7 @@ class QAgent():
         # the sum of the same sum from the validation set.
         a_pattern = 0
         # TODO: ERROR: NO COINCIDEN EL RETURN DE ENTRENAMIENTO CON EL CALCULADO EN NORMALIZE OBS
-        num_features = (self.vs_num_column-self.num_s)//(4*self.obsticks)
+        num_features = (self.vs_num_columns-self.num_s)//(4*self.obsticks)
         n_p = -1
         for i in range(0, num_features):
             n_p = n_p * -1
