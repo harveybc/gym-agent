@@ -129,7 +129,7 @@ class QAgent():
         # evaluate all models with the observation data window 
         self.action = []
         self.max_index = 0 
-        action_list = [0.0,0.0,0.0,0.0,0.0,0.0]
+        action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         vs = np.array(normalized_observation)
         # read the normalized_observation skipping (num_features-1) and sum the values to compare with
         # the sum of the same sum from the validation set.
