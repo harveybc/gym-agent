@@ -297,7 +297,7 @@ class QAgent():
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
-            #env_v.render()
+            #env_v.render() 
             if done:
                 break
         hist_scores.append(score)
