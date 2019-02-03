@@ -315,14 +315,14 @@ if __name__ == '__main__':
     agent.load_action_models()
     scores = []
     balances = []
-    for i in range(0, 4):
-        print("Testing signal ",8+i)
+    for i in range(0, 1):
+        print("Testing signal ",10+i)
         agent.test_action = i
         agent.load_action_models()
         balance,score = agent.evaluate()
         scores.append(score)
         balances.append(balance)
     print("Results:")
-    for i in range(0, 4):
-        print("Signal ", 8+i, " balance=",balances[i], " score=",scores[i])
+    for i in range(0, 1):
+        print("Signal ", 10+i, " balance=",balances[i], " score=",scores[i])
         
