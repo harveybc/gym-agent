@@ -88,7 +88,7 @@ class QAgent():
             kwargs={'dataset': self.env_f ,'max_volume':self.max_volume, 'max_sl':self.max_SL, 
                     'max_tp':self.max_TP, 'min_sl':self.min_SL,
                     'min_tp':self.min_TP,'obsticks':self.obsticks, 
-            'capital':800, 'leverage':100, 'num_features': 17}
+            'capital':800, 'leverage':100, 'num_features': 13}
         )
         # make openai gym environments
         self.env_v = gym.make('ForexValidationSet-v1')
