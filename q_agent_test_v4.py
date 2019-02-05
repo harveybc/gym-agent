@@ -164,10 +164,10 @@ class QAgent():
                 action_list = action_list_n.tolist()
                 break
         #print("normalized_observation=", normalized_observation)
-        #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
+        print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         # VOILA!
         self.action = action_list.copy()
-        #print("action=",self.action)
+        print("action=",self.action)
         return self.action
 
     ## normalize the observation matrix, converts it to a list feedable to a pretrained DcN
