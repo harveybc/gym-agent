@@ -129,7 +129,7 @@ class QAgent():
         # evaluate all models with the observation data window 
         self.action = []
         self.max_index = 0 
-        action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         vs = np.array(normalized_observation)
         # read the normalized_observation skipping (num_features-1) and sum the values to compare with
         # the sum of the same sum from the validation set.
@@ -160,7 +160,7 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if a_pattern == a_search:
-                action_list_n = self.vs_data[i, self.vs_num_columns-11 : self.vs_num_columns].copy()
+                action_list_n = self.vs_data[i, self.vs_num_columns-9 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
         #print("normalized_observation=", normalized_observation)
