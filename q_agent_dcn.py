@@ -116,7 +116,7 @@ class QAgent():
             self.min[i] = float(data[num_parts-2])
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
 
-def set_dcn_model(self):
+    def set_dcn_model(self):
 
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
@@ -190,6 +190,7 @@ def set_dcn_model(self):
         #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
         #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
         return paralell_model 
+
 
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self):
