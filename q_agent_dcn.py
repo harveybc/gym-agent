@@ -114,53 +114,19 @@ class QAgent():
         
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self):
-        self.vs_data = genfromtxt(self.vs_f, delimiter=',')
-        # get the number of observations
-        self.vs_num_ticks = len(self.vs_data)
-        self.vs_num_columns = len(self.vs_data[0])
-
-    ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
+        self.svr_rbf.load(self.model_prefix + str(signal)+'.dcn') 
+        
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observation data window 
         self.action = []
         self.max_index = 0 
         action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         vs = np.array(normalized_observation)
-        # read the normalized_observation skipping (num_features-1) and sum the values to compare with
-        # the sum of the same sum from the validation set.
-        a_pattern = 0
-        # TODO: ERROR: NO COINCIDEN EL RETURN DE ENTRENAMIENTO CON EL CALCULADO EN NORMALIZE OBS
-        num_features = (self.vs_num_columns-self.num_s)//(3*self.obsticks)
-        n_p = -1
-        for i in range(0, num_features):
-            n_p = n_p * -1
-            # print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
-            if n_p == 1:            
-                a_pattern = a_pattern + normalized_observation[self.obsticks * i]
-            else:
-                #print("len(normalized_observation)=",len(normalized_observation)," i=",i)
-                a_pattern = a_pattern * normalized_observation[self.obsticks * i]
-        #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
-        index = 0
-        
-        for i in range(1, self.vs_num_ticks):
-            a_search = 0
-            n_p = -1
-            # do the sum of the values per feature to compare with the q-datagen dataset output
-            for j in range(0, num_features):
-                n_p = n_p * -1
-                if n_p == 1:
-                    a_search = a_search + self.vs_data[i, self.obsticks * j]
-                else:
-                    a_search = a_search * self.vs_data[i, self.obsticks * j]
-            # Return all values from the action signals
-            if a_pattern == a_search:
-                action_list_n = self.vs_data[i, self.vs_num_columns-9 : self.vs_num_columns].copy()
-                action_list = action_list_n.tolist()
-                break
-        #print("normalized_observation=", normalized_observation)
-        #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
-        # VOILA!
+        # evaluate all models with the observation data window 
+        self.action = []
+        vs = np.array(normalized_observation)
+        vs_r = np.reshape(vs, (1, -1))
+        action_list[0] = self.svr_rbf.predict(vs_r)
         self.action = action_list.copy()
         #print("action=",self.action)
         return self.action
@@ -310,14 +276,14 @@ if __name__ == '__main__':
     agent.load_action_models()
     scores = []
     balances = []
-    for i in range(0, 9):
+    for i in range(0, 1):
         print("Testing signal ",10+i)
         agent.test_action = i
-        agent.load_action_models()
+        agent.load_action_model()
         balance,score = agent.evaluate()
         scores.append(score)
         balances.append(balance)
     print("Results:")
-    for i in range(0, 9):
+    for i in range(0, 1):
         print("Signal ", 10+i, " balance=",balances[i], " score=",scores[i])
         
