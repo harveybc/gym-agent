@@ -115,7 +115,82 @@ class QAgent():
             self.max[i] = float(data[num_parts-1])
             self.min[i] = float(data[num_parts-2])
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
+
+def set_dcn_model(self):
+
+        # Deep Convolutional Neural Network for Regression
+        model = Sequential()
+        # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
+        # first set of CONV => RELU => POOL
+        # mejor result 0.1 con dropout de 0.4 en 400 epochs con learning rate 0.0002 en config  521,64,32,16, en h4 2018 con indicator_period=70
+        # 0.2,0.1,lr=0.0002 1200 eva: 0.117
+        # 0.4,eva = 0.108
+        model.add(Dropout(0.4,input_shape=(self.num_features,self.window_size)))
+        model.add(Conv1D(512, 3))
+        model.add(Activation('sigmoid'))
+        # Sin batch_normalization daba: 0.204
+        # Con batch normalization: e=0.168
+        model.add(BatchNormalization())
+        # Con dropout = 0.1, e=0.168
+        # con dropout = 0.2, e=0.121
+        # con dropout = 0.4, e= 0.114
+        model.add(Dropout(0.4))
+        #sin capa de LSTM50,  e=0.107
+        #con capa de LSTM50, e= 0.191
+        #model.add(LSTM(units = 50, return_sequences = True))
         
+        #model.add(Dropout(0.2))
+        # mejor config so far: D0.4-512,D0.2-64,d0.1-32,16d64 error_vs=0.1 con 400 epochs y lr=0.0002
+        # sin capa de 64, eva = 0.114
+        # on capa de 128, eva = 0.125
+        # on capa de 32,  eva = 0.107
+        # on capa de 16,  eva = 0.114
+        model.add(Conv1D(32, 3))
+        model.add(Activation('sigmoid'))
+        #model.add(BatchNormalization())
+
+        # con otra capa de 32, eva5 = 0.126
+        # sin otra capa de 32, eva5 = 0.107, sin minmax normalization
+        # sin otra capa de 32, eva5 = 0.124 , con minmax normalization antes de power transform
+        #model.add(Conv1D(32, 3))
+        #model.add(Activation('sigmoid'))
+        #model.add(BatchNormalization())
+        #model.add(Dropout(0.1))
+        
+        # con capa de 16 da   eva5= 107
+        model.add(Conv1D(16, 3))
+        model.add(Activation('sigmoid'))
+        model.add(BatchNormalization())
+
+        #sin capa de LSTM50, eva3=0.104 probar con 400 epochs
+        #con capa de LSTM50, eva3= 0.212
+        #model.add(LSTM(units = 50, return_sequences = True))
+        
+        #model.add(MaxPooling1D(pool_size=2, strides=2))
+        # second set of CONV => RELU => POOL
+       # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+       # con d=0.1 daba 0.11 con loss=0.08
+       # con d=0.2 daba 0.22 con loss=0.06
+        model.add(Dense(64, activation='sigmoid', kernel_initializer='glorot_uniform')) # valor óptimo:64 @400k
+       # model.add(Activation ('sigmoid'))
+        #model.add(BatchNormalization())
+
+        # output layer
+        model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+        model.add(Dense(1, activation = 'sigmoid'))
+        # multi-GPU support
+        #model = to_multi_gpu(model)
+        #self.reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, min_lr=1e-4)
+        # use SGD optimizer
+        opt = Adamax(lr=self.learning_rate)
+        #opt = SGD(lr=self.learning_rate, momentum=0.9)
+        #paralell_model = multi_gpu_model(model, gpus=2)
+        paralell_model = model
+        paralell_model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
+        #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
+        #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
+        return paralell_model 
+
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self):
         self.svr_rbf.load(self.model_prefix + str(signal)+'.dcn') 
@@ -277,6 +352,7 @@ class QAgent():
 # main function 
 if __name__ == '__main__':
     agent = QAgent()
+    agent.svr_rbf = agent.set_dcn_model()
     agent.load_action_models()
     scores = []
     balances = []
