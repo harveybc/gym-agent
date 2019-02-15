@@ -360,8 +360,8 @@ if __name__ == '__main__':
     for i in range(0, 1):
         print("Testing signal ",10+i)
         agent.test_action = i
-        self.num_f = self.num_columns - self.num_s
-        self.num_features = self.num_f // self.window_size
+        agent.num_f = agent.num_columns - agent.num_s
+        agent.num_features = agent.num_f // agent.window_size
         agent.svr_rbf = agent.set_dcn_model()
         agent.load_action_model()
         balance,score = agent.evaluate()
