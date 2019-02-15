@@ -196,7 +196,7 @@ class QAgent():
 
 
     ## the action model is the same q-datagen generated dataset
-    def load_action_models(self):
+    def load_action_model(self, signal):
         self.svr_rbf.load(self.model_prefix + str(signal)+'.dcn') 
         
     def decide_next_action(self, normalized_observation):
@@ -364,7 +364,7 @@ if __name__ == '__main__':
         agent.num_f = agent.num_columns - agent.num_s
         agent.num_features = agent.num_f // agent.window_size
         agent.svr_rbf = agent.set_dcn_model()
-        agent.load_action_model()
+        agent.load_action_model(10+i)
         balance,score = agent.evaluate()
         scores.append(score)
         balances.append(balance)
