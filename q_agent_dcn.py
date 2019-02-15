@@ -316,8 +316,6 @@ class QAgent():
         observation = self.env_v.reset()
         #print("observation = ", observation)
         normalized_observation = agent.normalize_observation(observation, observation) 
-        self.num_f = normalized_observation.shape[1] - self.num_s
-        self.num_features = self.num_f // self.window_size
         #print("normalized_observation = ", normalized_observation)
         score = 0.0
         step = 0
@@ -357,13 +355,14 @@ class QAgent():
 # main function 
 if __name__ == '__main__':
     agent = QAgent()
-    agent.svr_rbf = agent.set_dcn_model()
-    agent.load_action_models()
     scores = []
     balances = []
     for i in range(0, 1):
         print("Testing signal ",10+i)
         agent.test_action = i
+        self.num_f = self.num_columns - self.num_s
+        self.num_features = self.num_f // self.window_size
+        agent.svr_rbf = agent.set_dcn_model()
         agent.load_action_model()
         balance,score = agent.evaluate()
         scores.append(score)
