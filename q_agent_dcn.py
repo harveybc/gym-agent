@@ -10,7 +10,6 @@ import gym_forex
 from gym.envs.registration import register
 import sys
 import neat
-from joblib import load
 from sklearn import svm
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,7 +21,7 @@ from sklearn import svm
 from operator import add,sub
 from joblib import dump, load
 from sklearn import preprocessing
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Conv2D,Conv1D, MaxPooling2D, MaxPooling1D
 from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization
 from keras.optimizers import SGD, Adamax
@@ -197,7 +196,7 @@ class QAgent():
 
     ## the action model is the same q-datagen generated dataset
     def load_action_model(self, signal):
-        self.svr_rbf.load(self.model_prefix + str(signal)+'.dcn') 
+        self.svr_rbf=load_model(self.model_prefix + str(signal)+'.dcn') 
         
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observation data window 
