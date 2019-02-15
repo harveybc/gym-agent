@@ -170,11 +170,11 @@ class QAgent():
         
         #model.add(MaxPooling1D(pool_size=2, strides=2))
         # second set of CONV => RELU => POOL
-        # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-        # con d=0.1 daba 0.11 con loss=0.08
-        # con d=0.2 daba 0.22 con loss=0.06
+       # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+       # con d=0.1 daba 0.11 con loss=0.08
+       # con d=0.2 daba 0.22 con loss=0.06
         model.add(Dense(64, activation='sigmoid', kernel_initializer='glorot_uniform')) # valor óptimo:64 @400k
-        # model.add(Activation ('sigmoid'))
+       # model.add(Activation ('sigmoid'))
         #model.add(BatchNormalization())
 
         # output layer
