@@ -60,6 +60,7 @@ class QAgent():
         self.vs_num_ticks = 0
         self.vs_num_columns = 0
         self.obsticks = 30
+        self.window_size = self.obsticks
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
         self.max_TP = 10000
@@ -69,15 +70,14 @@ class QAgent():
         self.max_volume = 0.1
         self.security_margin = 0.1
         self.test_action = 0
+        self.num_features = 0
         # load pre-processing settings
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
         self.pt = load(self.vs_f+'.powertransformer')
         # load feature-selection mask
         print("loading pre-processing feature selection mask")
-        self.mask = load(self.vs_f+'.feature_selection_mask')
-        
-        
+        self.mask = load(self.vs_f+'.feature_selection_mask')        
         
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
@@ -117,7 +117,6 @@ class QAgent():
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
 
     def set_dcn_model(self):
-
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
@@ -168,11 +167,11 @@ class QAgent():
         
         #model.add(MaxPooling1D(pool_size=2, strides=2))
         # second set of CONV => RELU => POOL
-       # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-       # con d=0.1 daba 0.11 con loss=0.08
-       # con d=0.2 daba 0.22 con loss=0.06
+        # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+        # con d=0.1 daba 0.11 con loss=0.08
+        # con d=0.2 daba 0.22 con loss=0.06
         model.add(Dense(64, activation='sigmoid', kernel_initializer='glorot_uniform')) # valor óptimo:64 @400k
-       # model.add(Activation ('sigmoid'))
+        # model.add(Activation ('sigmoid'))
         #model.add(BatchNormalization())
 
         # output layer
@@ -314,6 +313,8 @@ class QAgent():
         observation = self.env_v.reset()
         #print("observation = ", observation)
         normalized_observation = agent.normalize_observation(observation, observation) 
+        self.num_f = normalized_observation.shape[1] - self.num_s
+        self.num_features = self.num_f // self.window_size
         #print("normalized_observation = ", normalized_observation)
         score = 0.0
         step = 0
