@@ -1,12 +1,15 @@
 # agent_test_dcn:uses a pre-trained dcn to trade in a historic timeseries.
 
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 import gym
 import gym.wrappers
 import gym_forex
 from gym.envs.registration import register
 import sys
 import neat
-import os
 from joblib import load
 from sklearn import svm
 import numpy as np
