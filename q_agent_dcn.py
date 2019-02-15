@@ -74,6 +74,7 @@ class QAgent():
         self.security_margin = 0.1
         self.test_action = 0
         self.num_features = 0
+        self.learning_rate = 0.0002
         # load pre-processing settings
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
