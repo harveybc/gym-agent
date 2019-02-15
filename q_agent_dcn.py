@@ -206,9 +206,9 @@ class QAgent():
         vs = np.array(normalized_observation)
         # evaluate all models with the observation data window 
         self.action = []
-        #vs = np.array(normalized_observation)
-        #vs_r = np.reshape(vs, (1, -1))
-        action_list[0] = self.svr_rbf.predict(vs)
+        vs = np.array(normalized_observation)
+        vs_r = np.reshape(vs, (1, -1))
+        action_list[0] = self.svr_rbf.predict(vs_r)
         self.action = action_list.copy()
         #print("action=",self.action)
         return self.action
