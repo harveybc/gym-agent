@@ -199,7 +199,7 @@ class QAgent():
     def dcn_input(self, data):
         #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
         obs_matrix = []
-        print ("len(data[0])=",len(data[0]))
+        # print ("len(data[0])=",len(data[0]))
         self.num_features =  len(data[0])//self.window_size
         obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
         # for each observation
@@ -228,8 +228,8 @@ class QAgent():
         self.action = []
         vs = np.array(normalized_observation)
         vs_r = np.reshape(vs, (1, -1))
-        print ("vs_r = ",vs_r)
-        print ("dcn_input(vs_r) = ",self.dcn_input(vs_r))
+        #print ("vs_r = ",vs_r)
+        #print ("dcn_input(vs_r) = ",self.dcn_input(vs_r))
         
         action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
         self.action = action_list.copy()
