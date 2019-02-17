@@ -194,9 +194,12 @@ class QAgent():
         return paralell_model 
 
     ## Generate DCN  input matrix
+    # data is an observation row
+    
     def dcn_input(self, data):
         #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
         obs_matrix = []
+        self.num_features =  len(data)/self.window_size
         obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
         # for each observation
         data_p = np.array(data)
