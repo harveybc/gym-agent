@@ -356,6 +356,7 @@ class QAgent():
             observation_prev = observation.copy()
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
+            print("observation = ", observation)
             normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
