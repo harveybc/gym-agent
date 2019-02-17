@@ -199,6 +199,7 @@ class QAgent():
     def dcn_input(self, data):
         #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
         obs_matrix = []
+        print ("len(data)=",len(data))
         self.num_features =  len(data)//self.window_size
         obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
         # for each observation
