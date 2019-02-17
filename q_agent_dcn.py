@@ -229,21 +229,21 @@ class QAgent():
         #print("action=",self.action)
         return self.action
 
-    ## normalize the observation matrix, converts it to a list feedable to a pretrained DcN
-    # oldest data is first in dataset and also in observation matrix
-    # input obs_matrix, prev obs_matrix, output:row
+    # add return of each feature as in the q-datagen genreated dataset,
+    # applies power transform and feature selection mask to the observation,
+    # to generate a row similar to the q-datagen generated, from the observation matrix of size: (num_features_prefs, window_size)
+    # returns a roa with the pre-processed values
     def normalize_observation(self, observation, observation_prev):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         n_obs = []
         num_columns_o = len(observation)
-        #print("num_columns_o = ", num_columns_o)
+        # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
         for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
             for j in l_obs:
                 n_obs.append(j)
         # append list of the returned values 
-        # TODO: Cambiar a recorrido de l_obs restando el anterior y solo usar l_obs_prev para el primer elemento
         for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
             l_obs_prev = list(observation_prev[i])   
@@ -252,17 +252,11 @@ class QAgent():
             for l in l_obs:
                 n_obs.append(l)
         
-        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
-        for i in range(0,10):
-            n_obs.append(0) 
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
         
-        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
-        for i in range(0,9):
-            n_o.append(0)
         #apply feature selection.
         #print("n_o=",n_o)
         #print("mask=",self.mask)
