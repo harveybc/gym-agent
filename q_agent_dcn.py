@@ -231,7 +231,7 @@ class QAgent():
         #print ("vs_r = ",vs_r)
         
         print ("normalized_observation = ",normalized_observation)
-        
+        input("Press Enter to continue...")
         action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
         self.action = action_list.copy()
         #print("action=",self.action)
