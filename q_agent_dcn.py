@@ -230,7 +230,7 @@ class QAgent():
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
         
-        print ("normalized_observation = ",normailzed_observation)
+        print ("normalized_observation = ",normalized_observation)
         
         action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
         self.action = action_list.copy()
