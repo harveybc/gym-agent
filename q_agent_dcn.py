@@ -237,6 +237,8 @@ class QAgent():
         #print("action=",self.action)
         return self.action
 
+# TODO LAST: BUSCAR ERROR DE DIFERENCIA ENTRE OUT DATASET DE Q-DATAGEN y PRIMERA OBSERVATION NORMALIZADA
+    
     # add return of each feature as in the q-datagen genreated dataset,
     # applies power transform and feature selection mask to the observation,
     # to generate a row similar to the q-datagen generated, from the observation matrix of size: (num_features_prefs, window_size)
