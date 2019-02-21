@@ -230,9 +230,6 @@ class QAgent():
         vs = np.array(normalized_observation)
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
-        
-        print ("normalized_observation = ",normalized_observation)
-        input("Press Enter to continue...")
         action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
         self.action = action_list.copy()
         #print("action=",self.action)
@@ -336,10 +333,7 @@ class QAgent():
         # calculate the validation set score
         hist_scores = []
         observation = self.env_v.reset()
-        print("observation = ", observation)
         normalized_observation = agent.normalize_observation(observation, observation) 
-        print("normalized_observation = ", normalized_observation)
-        input("Press Enter to continue...")
         score = 0.0
         step = 0
         order_status=0
@@ -360,8 +354,11 @@ class QAgent():
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             observation_prev = observation.copy()
             observation, reward, done, info = self.env_v.step(action)
+            print("observation, second step = ", observation)
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation, observation_prev)
+            print("normalized_observation (2nd step) = ", normalized_observation)
+            input("Press Enter to continue...")
             score += reward
             #env_v.render() 
             if done:
