@@ -75,7 +75,8 @@ class QAgent():
         self.num_features = 0
         self.learning_rate = 0.0002
         # load pre-processing settings
-        self.pt = preprocessing.PowerTransformer()
+        #self.pt = preprocessing.PowerTransformer()
+        self.pt = preprocessing.StandardScaler()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
         self.pt = load(self.vs_f+'.powertransformer')
         # load feature-selection mask
