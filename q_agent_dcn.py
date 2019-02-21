@@ -264,7 +264,7 @@ class QAgent():
                 n_obs.append(l)
         
         #apply pre-processing
-        n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
+        #n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
         
