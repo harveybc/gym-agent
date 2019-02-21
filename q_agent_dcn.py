@@ -336,7 +336,8 @@ class QAgent():
         observation = self.env_v.reset()
         print("observation = ", observation)
         normalized_observation = agent.normalize_observation(observation, observation) 
-        #print("normalized_observation = ", normalized_observation)
+        print("normalized_observation = ", normalized_observation)
+        input("Press Enter to continue...")
         score = 0.0
         step = 0
         order_status=0
