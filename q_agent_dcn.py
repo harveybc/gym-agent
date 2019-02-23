@@ -332,8 +332,10 @@ class QAgent():
     def evaluate(self):
         # calculate the validation set score
         hist_scores = []
-        observation = self.env_v.reset()
-        normalized_observation = agent.normalize_observation(observation, observation) 
+        observation_prev = self.env_v.reset()
+        action = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        observation, reward, done, info = self.env_v.step(action)
+        normalized_observation = agent.normalize_observation(observation, observation_prev) 
         score = 0.0
         step = 0
         order_status=0
