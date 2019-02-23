@@ -275,7 +275,7 @@ class QAgent():
         
         n_obs = n_obs[self.mask]
     
-        return n_obs
+        return n_obs.copy()
     
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
