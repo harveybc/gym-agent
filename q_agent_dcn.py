@@ -356,10 +356,10 @@ class QAgent():
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             observation_prev = observation.copy()
             observation, reward, done, info = self.env_v.step(action)
-            print("observation, second step = ", observation)
+            print("observation, third row = ", observation)
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation, observation_prev)
-            print("normalized_observation (2nd step) = ", normalized_observation)
+            print("normalized_observation (3rd row) = ", normalized_observation)
             input("Press Enter to continue...")
             score += reward
             #env_v.render() 
