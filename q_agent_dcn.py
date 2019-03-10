@@ -259,22 +259,18 @@ class QAgent():
             l_dif = list( map(sub, l_obs, l_obs_prev) )
             for l in l_obs:
                 n_obs.append(l)
-        
         #apply pre-processing
         # n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_obs = np.array(n_obs).reshape(1,-1)
         n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
-        
         #apply feature selection.
         #print("n_o=",n_o)
         #print("mask=",self.mask)
         #print("len(n_o)=",len(n_o))
         #print("len(mask)", len(self.mask))
         n_obs=np.array(n_o)
-        
         n_obs = n_obs[self.mask]
-    
         return n_obs.copy()
     
     ## Function transform_action: convert the output of the raw_action into the
@@ -332,9 +328,13 @@ class QAgent():
     def evaluate(self):
         # calculate the validation set score
         hist_scores = []
+        # obs = first row
         observation_prev = self.env_v.reset()
+        print("observation_prev, fiirst_row = ", observation_prev)
         action = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        # obs = first row
         observation, reward, done, info = self.env_v.step(action)
+        print("observation, second_row = ", observation)
         normalized_observation = agent.normalize_observation(observation, observation_prev) 
         score = 0.0
         step = 0

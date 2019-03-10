@@ -78,8 +78,6 @@ class QAgent():
         print("loading pre-processing feature selection mask")
         self.mask = load(self.vs_f+'.feature_selection_mask')
         
-        
-        
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
@@ -118,7 +116,6 @@ class QAgent():
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
         
 def set_dcn_model(self):
-
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
@@ -190,8 +187,7 @@ def set_dcn_model(self):
         paralell_model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
         #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
         #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
-        return paralell_model         
-
+        return paralell_model
 
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self):
@@ -268,7 +264,6 @@ def set_dcn_model(self):
             l_dif = list( map(sub, l_obs, l_obs_prev) )
             for l in l_obs:
                 n_obs.append(l)
-        
         # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         for i in range(0,10):
             n_obs.append(0) 
@@ -276,7 +271,6 @@ def set_dcn_model(self):
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
-        
         # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         for i in range(0,9):
             n_o.append(0)
@@ -286,9 +280,7 @@ def set_dcn_model(self):
         #print("len(n_o)=",len(n_o))
         #print("len(mask)", len(self.mask))
         n_obs=np.array(n_o)
-        
         n_obs = n_obs[self.mask]
-    
         return n_obs
     
     ## Function transform_action: convert the output of the raw_action into the
@@ -313,21 +305,18 @@ def set_dcn_model(self):
                 dire = 1.0
             else:
                 dire = -1.0
-        
         # if there is an existing buy order
         if order_status == 1:
             # si action[0] == 0 cierra orden de buy 
             if (self.raw_action[self.test_action] <= 0.5):
                 # closes buy order  
                 dire = -1.0
-               
         # if there is an existing sell order               
         if order_status == -1:
             # if action[0]>0, closes the sell order
             if (self.raw_action[self.test_action] > 0.5):
                 # closes sell order  
                 dire = 1.0
-             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp)
         act.append(sl)
