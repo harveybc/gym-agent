@@ -330,7 +330,7 @@ class QAgent():
         hist_scores = []
         # obs = first row
         observation_prev = self.env_v.reset()
-        print("observation_prev, fiirst_row = ", observation_prev[0])
+        print("observation, fiirst_row = ", observation_prev[0])
         action = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         # obs = first row
         observation, reward, done, info = self.env_v.step(action)
