@@ -330,11 +330,11 @@ class QAgent():
         hist_scores = []
         # obs = first row
         observation_prev = self.env_v.reset()
-        print("observation, fiirst_row = ", observation_prev[0])
+        #print("observation, fiirst_row = ", observation_prev[0])
         action = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         # obs = first row
         observation, reward, done, info = self.env_v.step(action)
-        print("observation, second_row = ", observation[0])
+        #print("observation, second_row = ", observation[0])
         normalized_observation = agent.normalize_observation(observation, observation_prev) 
         score = 0.0
         step = 0
@@ -356,11 +356,11 @@ class QAgent():
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             observation_prev = observation.copy()
             observation, reward, done, info = self.env_v.step(action)
-            print("observation, third row = ", observation[0])
+            #print("observation, third row = ", observation[0])
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation, observation_prev)
-            print("normalized_observation (3rd row) = ", normalized_observation[0])
-            input("Press Enter to continue...")
+            #print("normalized_observation (3rd row) = ", normalized_observation[0])
+            #input("Press Enter to continue...")
             score += reward
             #env_v.render() 
             if done:
