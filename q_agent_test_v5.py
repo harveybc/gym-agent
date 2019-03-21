@@ -30,7 +30,7 @@ class QAgent():
     #  initialize forex environment.
     def __init__(self):
         # percentage of noise to add to an action
-        self.noise = 0.25
+        self.noise = 0.01
         # First argument is the validation dataset, including headers indicating maximum and minimum per feature
         self.vs_f = sys.argv[1]
         # Second argument is the prefix (including path) for the dcn pre-trained models 
