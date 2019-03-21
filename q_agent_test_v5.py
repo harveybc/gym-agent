@@ -30,8 +30,15 @@ class QAgent():
     #  initialize forex environment.
     def __init__(self):
         # percentage of noise to add to an action
-        #TODO cambiar acciones para que solo se cierren ordenes por SL o TP
-        self.noise = 0.1
+        # TODO: cambiar acciones para que solo se cierren ordenes por SL o TP (dep de volatility)
+        self.noise = 0.0
+        # TODO: probar con órdenes con duración mínima en ticks (solo se puden cerrar por TP/SL y por acttion si se ha superado el min_duartion)
+        self.duration = 0
+        self.min_duration = 20
+        # TODO: probar con órdenes que solo se cierran por SL/TP
+        # TODO: hacer gridsearch de SL/TP
+        # TODO: en caso ideal sin ruido, probar si ganancia incrementa con volumen controlado por volatility
+        # TODO: probar si mejora SL/TP controlados por volatilidad respecto a los mejores fijos encontrados por gridsearch
         # First argument is the validation dataset, including headers indicating maximum and minimum per feature
         self.vs_f = sys.argv[1]
         # Second argument is the prefix (including path) for the dcn pre-trained models 
@@ -302,6 +309,13 @@ class QAgent():
         tp = 1.0
         sl = 1.0
         vol  = 1.0
+        
+        # TODO: if there is an opened order, increases de duration counter, else set it to 0
+        if (order_status==0):
+            self.duration = 0
+        else:
+            self.duration = self.duration + 1
+        # TODO: add min_duration constraint to evaluate if closing an open order with an action
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
@@ -311,13 +325,13 @@ class QAgent():
             else:
                 dire = -1.0
         # if there is an existing buy order
-        if order_status == 1:
+        if (order_status == 1) and (self.duration>self.min_duration):
             # si action[0] == 0 cierra orden de buy 
             if (self.raw_action[self.test_action] <= 0.5):
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
-        if order_status == -1:
+        if (order_status == -1) and (self.duration>self.min_duration):
             # if action[0]>0, closes the sell order
             if (self.raw_action[self.test_action] > 0.5):
                 # closes sell order  
