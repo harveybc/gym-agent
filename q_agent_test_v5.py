@@ -31,7 +31,7 @@ class QAgent():
     def __init__(self):
         # percentage of noise to add to an action
         # TODO: cambiar acciones para que solo se cierren ordenes por SL o TP (dep de volatility)
-        self.noise = 0.25
+        self.noise = 0.0
         # TODO: probar con órdenes con duración mínima en ticks (solo se puden cerrar por TP/SL y por acttion si se ha superado el min_duartion)
         # noise0, min_duratopn = 0          bal=241k
         # noise0, min_duration = 20         bal=43k
