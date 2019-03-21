@@ -115,7 +115,7 @@ class QAgent():
             self.min[i] = float(data[num_parts-2])
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
         
-def set_dcn_model(self):
+    def set_dcn_model(self):
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
