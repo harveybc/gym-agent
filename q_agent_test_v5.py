@@ -35,7 +35,7 @@ class QAgent():
         # TODO: probar con órdenes con duración mínima en ticks (solo se puden cerrar por TP/SL y por acttion si se ha superado el min_duartion)
         # noise0, min_duratopn = 0          bal=241k
         # noise0, min_duration = 20         bal=43k
-        # noise 0.25, min_duration = 20     bal=
+        # noise 0.25, min_duration = 20     bal=1k
         self.duration = 0
         self.min_duration = 20
         # TODO: probar con órdenes que solo se cierran por SL/TP
@@ -72,9 +72,9 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 100
-        self.max_TP = 10000
+        self.max_TP = 4000
         self.min_SL = 100
-        self.max_SL = 10000
+        self.max_SL = 2000
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
