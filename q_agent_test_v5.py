@@ -37,7 +37,7 @@ class QAgent():
         # noise0, min_duration = 20         bal=43k
         # noise 0.25, min_duration = 20     bal=1k
         self.duration = 0
-        self.min_duration = 20
+        self.min_duration = 100
         # TODO: probar con órdenes que solo se cierran por SL/TP
         # TODO: hacer gridsearch de SL/TP
         # TODO: en caso ideal sin ruido, probar si ganancia incrementa con volumen controlado por volatility
