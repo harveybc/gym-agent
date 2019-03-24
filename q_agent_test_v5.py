@@ -37,7 +37,7 @@ class QAgent():
         # noise0, min_duration = 20         bal=43k
         # noise 0.25, min_duration = 20     bal=1k
         self.duration = 0
-        self.min_duration = 100
+        self.min_duration = 1
         # TODO: probar con órdenes que solo se cierran por SL/TP
         # TODO: hacer gridsearch de SL/TP
         # TODO: en caso ideal sin ruido, probar si ganancia incrementa con volumen controlado por volatility
@@ -240,10 +240,12 @@ class QAgent():
                 else:
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
-            if a_pattern == a_search:
+            if (a_pattern == a_search) and (i == self.vs_num_ticks-1):
                 action_list_n = self.vs_data[i, self.vs_num_columns-9 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
+            else:
+                print("PATTERN NOT FOUND, i=",i)
         #print("normalized_observation=", normalized_observation)
         #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         #adds noise to the action 0
