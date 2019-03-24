@@ -240,12 +240,13 @@ class QAgent():
                 else:
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
-            if (a_pattern == a_search) and (i == self.vs_num_ticks-1):
+            if (a_pattern == a_search):
                 action_list_n = self.vs_data[i, self.vs_num_columns-9 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
             else:
-                print("PATTERN NOT FOUND, i=",i)
+                if (i == self.vs_num_ticks-1):
+                    print("PATTERN NOT FOUND, i=",i)
         #print("normalized_observation=", normalized_observation)
         #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         #adds noise to the action 0
