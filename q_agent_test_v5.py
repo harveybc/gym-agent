@@ -246,7 +246,7 @@ class QAgent():
                 break
             else:
                 if (i == self.vs_num_ticks-1):
-                    print("PATTERN NOT FOUND, i=",i)
+                    print("PATTERN NOT FOUND, i=",i, " normalized_observation=",normalized_observation )
         #print("normalized_observation=", normalized_observation)
         #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
         #adds noise to the action 0
