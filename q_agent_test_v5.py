@@ -401,6 +401,7 @@ class QAgent():
             #env_v.render() 
             if done:
                 break
+        lw = 2
         y_rbf = balance
         y_v = equity
         x_seq = list(range(0, len(balance)))
