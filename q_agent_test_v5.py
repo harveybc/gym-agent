@@ -373,8 +373,8 @@ class QAgent():
             observation_prev = observation.copy()
            #if step > 1:
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
-            if (step < 1 ) and (step > (self.vs_num_ticks-self.obsticks)):
-            
+            if (step < 3 ) and (step > (self.vs_num_ticks-self.obsticks)):
+                print ("Skippig limits, step = ", step)
                 # action = nop
                 action = []
                 # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
