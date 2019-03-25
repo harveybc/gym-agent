@@ -282,14 +282,12 @@ class QAgent():
             l_dif = list( map(sub, l_obs, l_obs_prev) )
             for l in l_obs:
                 n_obs.append(l)
-        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         #for i in range(0,10):
         #    n_obs.append(0) 
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         n_o = n_obs[0].tolist()
         #print("n_o=",n_o)
-        # append 10 columns used to preprocess test training signals TODO: QUITAR DE AQUI Y DEL DATASET
         #for i in range(0,9):
         #    n_o.append(0)
         #apply feature selection.
@@ -331,13 +329,13 @@ class QAgent():
             else:
                 dire = -1.0
         # if there is an existing buy order
-        if (order_status == 1) and (self.duration>self.min_duration):
+        if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
             if (self.raw_action[self.test_action] <= 0.5):
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
-        if (order_status == -1) and (self.duration>self.min_duration):
+        if (order_status == -1) and (self.duration > self.min_duration):
             # if action[0]>0, closes the sell order
             if (self.raw_action[self.test_action] > 0.5):
                 # closes sell order  
@@ -369,20 +367,27 @@ class QAgent():
         order_status=0
         while 1:
             step += 1
+            # si el step > 2, hacce el resto, sono usa vector e zeros como accion 
             self.raw_action = self.decide_next_action(normalized_observation)
             action = self.transform_action(order_status)
-            #print("raw_action=", self.raw_action, " action=", action)
-            # TODO: verificar que datos usados en training sean inguales a los usados en evaluate()
-            #       verificar primera fila de pretrainer ts y primera fila que se envía a svm en evaluate()
-            #       comparar que ambas predicciones den los mismos valores para las self.num_s acciones
-            # TODO: probar con DCN
-            # TODO: exportar plots de pre-trainer como imagenes
-            # TODO: verificar que fórmulas para cada action reward son correctas, haciendo 
-            #       modelo pre-entrenado que retorna para cada lecctura los valores exáctos de 
-            #       reward de cada acción basado en tabla de training apra simular mejor caso
-            #if step > 1:
-            #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
             observation_prev = observation.copy()
+           #if step > 1:
+            #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            if (step < 1 ) and (step > (self.vs_num_ticks-self.obsticks)):
+            
+                # action = nop
+                action = []
+                # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
+                dire = 0.0
+                tp = 1.0
+                sl = 1.0
+                vol  = 1.0
+                # Create the action list output [tp, sl, vol, dir]
+                action.append(tp)
+                action.append(sl)
+                action.append(vol)  
+                action.append(dire)
+            
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
             normalized_observation = self.normalize_observation(observation, observation_prev)
