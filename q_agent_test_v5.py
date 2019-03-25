@@ -365,6 +365,8 @@ class QAgent():
         score = 0.0
         step = 0
         order_status=0
+        equity=[]
+        balance=[]
         while 1:
             step += 1
             # si el step > 2, hacce el resto, sono usa vector e zeros como accion 
@@ -390,11 +392,28 @@ class QAgent():
             
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
+            equity.append(info['equity'])
+            balance.append(info['balance'])
+            
+            # TODO: Hacer gráfico de balance y equity
             normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
             if done:
                 break
+        y_rbf = balance
+        y_v = equity
+        x_seq = list(range(0, len(balance)))
+        fig=plt.figure()
+        plt.plot(x_seq, self.y_v, color='darkorange', label='Equity')
+        plt.plot(x_seq, y_rbf, color='navy', lw=lw, label='Balance')
+        plt.xlabel('tick')
+        plt.ylabel('value')
+        plt.title('Performance')
+        plt.legend()
+        #fig.savefig('predict_cpu_' + str(signal) + '.png')
+        plt.show()
+    
         hist_scores.append(score)
         avg_score = sum(hist_scores) / len(hist_scores)
         print("Validation Set Score = ", avg_score)
