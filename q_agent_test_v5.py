@@ -405,7 +405,7 @@ class QAgent():
         y_v = equity
         x_seq = list(range(0, len(balance)))
         fig=plt.figure()
-        plt.plot(x_seq, self.y_v, color='darkorange', label='Equity')
+        plt.plot(x_seq, y_v, color='darkorange', label='Equity')
         plt.plot(x_seq, y_rbf, color='navy', lw=lw, label='Balance')
         plt.xlabel('tick')
         plt.ylabel('value')
