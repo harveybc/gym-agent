@@ -413,6 +413,7 @@ class QAgent():
         plt.legend()
         #fig.savefig('predict_cpu_' + str(signal) + '.png')
         plt.show()
+        
     
         hist_scores.append(score)
         avg_score = sum(hist_scores) / len(hist_scores)
