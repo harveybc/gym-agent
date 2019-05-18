@@ -241,6 +241,7 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if (a_pattern == a_search):
+                # there are 19 signals and vs_num_columns - 11 is the 8th training signals
                 action_list_n = self.vs_data[i, self.vs_num_columns-11 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
@@ -323,7 +324,7 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[self.test_action] > 0.5):
+            if (self.raw_action[self.test_action] > 0):
                 # opens buy order  
                 dire = 1.0
             else:
@@ -331,13 +332,13 @@ class QAgent():
         # if there is an existing buy order
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[self.test_action] <= 0.5):
+            if (self.raw_action[self.test_action] <= 0):
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
         if (order_status == -1) and (self.duration > self.min_duration):
             # if action[0]>0, closes the sell order
-            if (self.raw_action[self.test_action] > 0.5):
+            if (self.raw_action[self.test_action] > 0):
                 # closes sell order  
                 dire = 1.0
         # Create the action list output [tp, sl, vol, dir]
