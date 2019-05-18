@@ -71,10 +71,10 @@ class QAgent():
         self.vs_num_columns = 0
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
-        self.min_TP = 100
-        self.max_TP = 1000
-        self.min_SL = 100
-        self.max_SL = 1000
+        self.min_TP = 1000
+        self.max_TP = 20000
+        self.min_SL = 1000
+        self.max_SL = 20000
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -434,7 +434,7 @@ if __name__ == '__main__':
     scores = []
     balances = []
     for i in range(0, 1):
-        print("Testing signal ",10+i)
+        print("Testing signal ",8+i)
         agent.test_action = i
         agent.load_action_models()
         balance,score = agent.evaluate()
@@ -442,5 +442,5 @@ if __name__ == '__main__':
         balances.append(balance)
     print("Results:")
     for i in range(0, 1):
-        print("Signal ", 10+i, " balance=",balances[i], " score=",scores[i])
+        print("Signal ", 8+i, " balance=",balances[i], " score=",scores[i])
         
