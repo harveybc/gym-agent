@@ -74,7 +74,7 @@ class QAgent():
         self.min_TP = 500
         self.max_TP = 5000
         self.min_SL = 500
-        self.max_SL = 5000
+        self.max_SL = 2000
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
