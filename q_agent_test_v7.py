@@ -1,4 +1,5 @@
-# agent_test_v6: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
+# agent_test_v7: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
+# This version uses a dynamic TP and SL depending on the length of the ñ 
 
 import gym
 import gym.wrappers
@@ -340,10 +341,10 @@ class QAgent():
             # if action[0]>0, closes the sell order
             if (self.raw_action[self.test_action] > 0):
                 # closes sell order  
-                dire = 1.0
+                dire = 1.0 
         # Create the action list output [tp, sl, vol, dir]
-        act.append(tp)
-        act.append(sl)
+        act.append(tp*abs(self.raw_action[self.test_action]))
+        act.append(sl*abs(self.raw_action[self.test_action]))
         act.append(vol)  
         act.append(dire)
         return act
