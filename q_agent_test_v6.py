@@ -413,7 +413,7 @@ class QAgent():
         plt.ylabel('value')
         plt.title('Performance')
         plt.legend()
-        fig.savefig('agent_test_' + str(signal) + '.png')
+        fig.savefig('agent_test_8.png')
         #plt.show()
         
     
