@@ -72,9 +72,9 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 1000
-        self.max_TP = 20000
+        self.max_TP = 10000
         self.min_SL = 1000
-        self.max_SL = 20000
+        self.max_SL = 10000
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -413,8 +413,8 @@ class QAgent():
         plt.ylabel('value')
         plt.title('Performance')
         plt.legend()
-        #fig.savefig('predict_cpu_' + str(signal) + '.png')
-        plt.show()
+        fig.savefig('agent_test_' + str(signal) + '.png')
+        #plt.show()
         
     
         hist_scores.append(score)
