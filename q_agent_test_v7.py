@@ -344,7 +344,7 @@ class QAgent():
                 dire = 1.0 
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp*abs(self.raw_action[self.test_action]))
-        act.append(sl*(1 - abs(self.raw_action[self.test_action])))
+        act.append(sl*(1.5 - abs(self.raw_action[self.test_action])))
         act.append(vol)  
         act.append(dire)
         return act
