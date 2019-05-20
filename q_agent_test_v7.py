@@ -342,9 +342,18 @@ class QAgent():
             if (self.raw_action[self.test_action] > 0):
                 # closes sell order  
                 dire = 1.0 
+        # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
+        tp_a = abs(self.raw_action[self.test_action])
+        sl_a = 1-tp_a
+        if (tp_a < 0.1):
+            tp_a = 0.1
+        if (sl_a < 0.1):
+            sl_a = 0.1
+            
         # Create the action list output [tp, sl, vol, dir]
-        act.append(tp*abs(self.raw_action[self.test_action]))
-        act.append(sl*(1.5 - abs(self.raw_action[self.test_action])))
+        act.append(tp_a)
+        # TODO: en el simulador, implmeentar min_tp ysl
+        act.append(sl_a)
         act.append(vol)  
         act.append(dire)
         return act
