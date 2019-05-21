@@ -75,12 +75,12 @@ class QAgent():
         self.min_TP = 300
         self.max_TP = 2000
         self.min_SL = 300
-        self.max_SL = 2000 
+        self.max_SL = 2000  
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
         self.test_action = 0
-        # load pre-processing settings
+        # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
         self.pt = load(self.vs_f+'.powertransformer')
