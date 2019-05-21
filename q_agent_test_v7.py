@@ -75,7 +75,7 @@ class QAgent():
         self.min_TP = 300
         self.max_TP = 2000
         self.min_SL = 300
-        self.max_SL = 2000 
+        self.max_SL = 1000 
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -366,7 +366,7 @@ class QAgent():
     # 1 = Sell/CloseBuy/nopCloseSell
     # 2 = No Open Buy
     # 3 = No Open Sell
-    def evaluate(self):
+    def evaluate(self, max_ticks):
         # calculate the validation set score
         hist_scores = []
         observation = self.env_v.reset()
@@ -410,7 +410,7 @@ class QAgent():
             normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
-            if done:
+            if done or (step > max_ticks):
                 break
         lw = 2
         y_rbf = balance
@@ -446,7 +446,7 @@ if __name__ == '__main__':
         print("Testing signal ",8+i)
         agent.test_action = i
         agent.load_action_models()
-        balance,score = agent.evaluate()
+        balance,score = agent.evaluate(6000)
         scores.append(score)
         balances.append(balance)
     print("Results:")
