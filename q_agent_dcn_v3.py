@@ -356,10 +356,11 @@ class QAgent():
             action = self.transform_action(order_status)
             observation_prev = observation.copy()
             # TODO: Test, quitar cuando coincidan observations de agent_dcn y pretrainer
-            if step > 1:
-                #print("a=", raw_action[0], " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
-                print("observation")
-            if (step < 3 ) or (step > (self.vs_num_ticks-self.obsticks)):
+            #if step > 1:
+            #    #print("a=", raw_action[0], " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            #    print("observation")
+            
+            if (step < (3*self.num_ticks)//4 ) or (step > (self.vs_num_ticks-self.obsticks)):
                 print ("Skippig limits, step = ", step)
                 # action = nop
                 action = []

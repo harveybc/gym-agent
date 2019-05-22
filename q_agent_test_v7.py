@@ -360,11 +360,8 @@ class QAgent():
             action = self.transform_action(order_status)
             observation_prev = observation.copy()
             #if step > 1:
-            elf.vs_s = self.ts_g[(3*self.num_ticks)//4 : self.num_ticks,:]
             #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
-            # TODO : inicia desde el mismo tick de vs que q-pretrainer.
-            # self.vs_s = self.ts_g[(3*self.num_ticks)//4 : self.num_ticks,:]
-            if (step < (3*self.num_ticks)//4) or (step > (self.vs_num_ticks-self.obsticks)): 
+            if (step < 3 ) or (step > (self.vs_num_ticks-self.obsticks)):
                 print ("Skippig limits, step = ", step)
                 # action = nop
                 action = []
