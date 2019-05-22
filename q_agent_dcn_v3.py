@@ -20,6 +20,11 @@ from sklearn import svm
 from operator import add,sub
 from joblib import dump, load
 from sklearn import preprocessing
+from keras.models import Sequential, load_model
+from keras.layers import Conv2D,Conv1D, MaxPooling2D, MaxPooling1D
+from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization
+from keras.optimizers import SGD, Adamax
+            
 import random
             
 ## \class QAgent
