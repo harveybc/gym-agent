@@ -129,63 +129,38 @@ class QAgent():
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        # first set of CONV => RELU => POOL
-        # mejor result 0.1 con dropout de 0.4 en 400 epochs con learning rate 0.0002 en config  521,64,32,16, en h4 2018 con indicator_period=70
-        # 0.2,0.1,lr=0.0002 1200 eva: 0.117
-        # 0.4,eva = 0.108
-        model.add(Dropout(0.4,input_shape=(self.num_features,self.window_size)))
-        model.add(Conv1D(512, 3))
-        model.add(Activation('sigmoid'))
-        # Sin batch_normalization daba: 0.204
-        # Con batch normalization: e=0.168
+        # model.add(Dropout(0.6,input_shape=(self.num_features,self.window_size)))
+        model.add(Conv1D(48, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size)))
         model.add(BatchNormalization())
-        # Con dropout = 0.1, e=0.168
-        # con dropout = 0.2, e=0.121
-        # con dropout = 0.4, e= 0.114
-        model.add(Dropout(0.4))
-        #sin capa de LSTM50,  e=0.107
-        #con capa de LSTM50, e= 0.191
-        #model.add(LSTM(units = 50, return_sequences = True))
+        model.add(Activation('relu'))
         
-        #model.add(Dropout(0.2))
-        # mejor config so far: D0.4-512,D0.2-64,d0.1-32,16d64 error_vs=0.1 con 400 epochs y lr=0.0002
-        # sin capa de 64, eva = 0.114
-        # on capa de 128, eva = 0.125
-        # on capa de 32,  eva = 0.107
-        # on capa de 16,  eva = 0.114
-        model.add(Conv1D(32, 3))
-        model.add(Activation('sigmoid'))
-        #model.add(BatchNormalization())
-
-        # con otra capa de 32, eva5 = 0.126
-        # sin otra capa de 32, eva5 = 0.107, sin minmax normalization
-        # sin otra capa de 32, eva5 = 0.124 , con minmax normalization antes de power transform
-        #model.add(Conv1D(32, 3))
-        #model.add(Activation('sigmoid'))
-        #model.add(BatchNormalization())
-        #model.add(Dropout(0.1))
+        model.add(MaxPooling1D(pool_size=3, strides=2))
         
-        # con capa de 16 da   eva5= 107
-        model.add(Conv1D(16, 3))
-        model.add(Activation('sigmoid'))
+        model.add(Conv1D(128, 3, use_bias=False))
         model.add(BatchNormalization())
-
-        #sin capa de LSTM50, eva3=0.104 probar con 400 epochs
-        #con capa de LSTM50, eva3= 0.212
-        #model.add(LSTM(units = 50, return_sequences = True))
+        model.add(Activation('relu'))
+       
+        model.add(MaxPooling1D(pool_size=3, strides=2))
         
-        #model.add(MaxPooling1D(pool_size=2, strides=2))
-        # second set of CONV => RELU => POOL
-       # model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-       # con d=0.1 daba 0.11 con loss=0.08
-       # con d=0.2 daba 0.22 con loss=0.06
-        model.add(Dense(64, activation='sigmoid', kernel_initializer='glorot_uniform')) # valor óptimo:64 @400k
-       # model.add(Activation ('sigmoid'))
-        #model.add(BatchNormalization())
-
-        # output layer
-        model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-        model.add(Dense(1, activation = 'sigmoid'))
+        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
+        model.add(BatchNormalization())
+        model.add(Activation('relu'))
+       
+        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
+        model.add(BatchNormalization())
+        model.add(Activation('relu'))
+       
+        model.add(Conv1D(128, 3, stride=1, padding=1, use_bias=False))
+        model.add(BatchNormalization())
+        model.add(Activation('relu'))
+       
+        model.add(MaxPooling1D(pool_size=3, strides=2))
+        
+        model.add(Dense(640)) 
+        model.add(Dropout(0.2))
+        model.add(Dense(640)) 
+        model.add(Dropout(0.2))
+        model.add(Dense(256))
         # multi-GPU support
         #model = to_multi_gpu(model)
         #self.reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, min_lr=1e-4)
@@ -200,64 +175,23 @@ class QAgent():
         return paralell_model
 
     ## the action model is the same q-datagen generated dataset
-    def load_action_models(self):
-        self.vs_data = genfromtxt(self.vs_f, delimiter=',')
-        # get the number of observations
-        self.vs_num_ticks = len(self.vs_data)
-        self.vs_num_columns = len(self.vs_data[0])
+    def load_action_models(self, signal):
+        self.svr_rbf = load_model(self.model_prefix + str(signal)+'.dcn') 
 
     ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
+        # TODO: evaluar el modelo de regresion y retornar como action un arreglo con el valor predicho por cada modelo. (0= clasif,1=regresion)
         # evaluate all models with the observation data window 
         self.action = []
         self.max_index = 0 
         action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
         vs = np.array(normalized_observation)
-        # read the normalized_observation skipping (num_features-1) and sum the values to compare with
-        # the sum of the same sum from the validation set.
-        a_pattern = 0
-        # TODO: ERROR: NO COINCIDEN EL RETURN DE ENTRENAMIENTO CON EL CALCULADO EN NORMALIZE OBS
-        num_features = (self.vs_num_columns-self.num_s)//(3*self.obsticks)
-        n_p = -1
-        for i in range(0, num_features):
-            n_p = n_p * -1
-            # print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
-            if n_p == 1:            
-                a_pattern = a_pattern + normalized_observation[self.obsticks * i]
-            else:
-                #print("len(normalized_observation)=",len(normalized_observation)," i=",i)
-                a_pattern = a_pattern * normalized_observation[self.obsticks * i]
-        #  for each row of the validation set(output of q-datagen), do the sum and compare with the observation sum
-        index = 0
-        
-        for i in range(1, self.vs_num_ticks):
-            a_search = 0
-            n_p = -1
-            # do the sum of the values per feature to compare with the q-datagen dataset output
-            for j in range(0, num_features):
-                n_p = n_p * -1
-                if n_p == 1:
-                    a_search = a_search + self.vs_data[i, self.obsticks * j]
-                else:
-                    a_search = a_search * self.vs_data[i, self.obsticks * j]
-            # Return all values from the action signals
-            if (a_pattern == a_search):
-                # there are 19 signals and vs_num_columns - 11 is the 8th training signals
-                action_list_n = self.vs_data[i, self.vs_num_columns-11 : self.vs_num_columns].copy()
-                action_list = action_list_n.tolist()
-                break
-            else:
-                if (i == self.vs_num_ticks-1):
-                    print("PATTERN NOT FOUND, i=",i)
-        #print("normalized_observation=", normalized_observation)
-        #print("a_pattern=", a_pattern, " a_search=", a_search, " index=", i)
-        #adds noise to the action 0
-        if (random.random()<self.noise):
-            if (action_list[0]>0.5):
-                action_list[0]=0.0
-            else:
-                action_list[0]=1.0
-        # VOILA!
+        # evaluate all models with the observation data window 
+        self.action = []
+        vs = np.array(normalized_observation)
+        vs_r = np.reshape(vs, (1, -1))
+        #print ("vs_r = ",vs_r)
+        action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
         self.action = action_list.copy()
         #print("action=",self.action)
         return self.action
@@ -439,13 +373,14 @@ class QAgent():
 if __name__ == '__main__':
     agent = QAgent()
     #agent.svr_rbf = agent.set_dcn_model()
-    agent.load_action_models()
+    training_signal = 8
+    agent.load_action_models(training_signal)
     scores = []
     balances = []
     for i in range(0, 1):
-        print("Testing signal ",8+i)
+        print("Testing signal ",training_signal +i)
         agent.test_action = i
-        agent.load_action_models()
+        agent.load_action_models(training_signal)
         balance,score = agent.evaluate(6000)
         scores.append(score)
         balances.append(balance)
