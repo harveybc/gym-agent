@@ -86,6 +86,8 @@ class QAgent():
         self.max_volume = 0.1
         self.security_margin = 0.1
         self.test_action = 0
+        self.num_f = 0
+        self.num_features = 0
         # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
@@ -207,6 +209,8 @@ class QAgent():
         self.vs_data = genfromtxt(self.vs_f, delimiter=',')
         self.vs_num_ticks = len(self.vs_data)
         self.vs_num_columns = len(self.vs_data[0])
+        self.num_f = self.vs_num_columns - self.num_s
+        self.num_features = self.num_f // self.window_size
 
     ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
@@ -352,8 +356,6 @@ class QAgent():
         while 1:
             step += 1
             # si el step > 2, hacce el resto, sono usa vector e zeros como accion 
-            self.raw_action = self.decide_next_action(normalized_observation)
-            action = self.transform_action(order_status)
             observation_prev = observation.copy()
             # TODO: Test, quitar cuando coincidan observations de agent_dcn y pretrainer
             #if step > 1:
@@ -374,6 +376,9 @@ class QAgent():
                 action.append(sl)
                 action.append(vol)  
                 action.append(dire)
+            else:
+                self.raw_action = self.decide_next_action(normalized_observation)
+                action = self.transform_action(order_status)
             
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
