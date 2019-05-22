@@ -178,6 +178,27 @@ class QAgent():
         #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
         #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
         return paralell_model
+    ## Generate DCN  input matrix
+    # data is an observation row
+    
+    def dcn_input(self, data):
+        #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
+        obs_matrix = []
+        # print ("len(data[0])=",len(data[0]))
+        self.num_features =  len(data[0])//self.window_size
+        obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
+        # for each observation
+        data_p = np.array(data)
+        for i, ob in enumerate(data):
+            # for each feature, add an array of window_size elements
+            for j in range(0,self.num_features):
+                #print("obs=",obs)
+                #print("data_p=",data_p[i, j * self.window_size : (j+1) * self.window_size])
+                obs[j] = data_p[i, j * self.window_size : (j+1) * self.window_size]
+                #obs[j] = ob[0]
+            obs_matrix.append(obs.copy())
+        return np.array(obs_matrix)
+
 
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self, signal):
