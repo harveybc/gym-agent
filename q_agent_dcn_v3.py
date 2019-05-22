@@ -93,7 +93,9 @@ class QAgent():
         # load feature-selection mask
         print("loading pre-processing feature selection mask")
         self.mask = load(self.vs_f+'.feature_selection_mask')
-        
+        # variables for output csv files for observations and prediction
+        self.out_obs = []
+        self.out_act = []
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
@@ -219,7 +221,13 @@ class QAgent():
         vs = np.array(normalized_observation)
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
-        action_list[0] = self.svr_rbf.predict(self.dcn_input(vs_r))
+        obs = self.dcn_input(vs_r)
+        action_list[0] = self.svr_rbf.predict(obs)
+        # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
+        self.out_obs.append(obs)
+        # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
+        self.out_act.append(action_list[0])
+        # seto the returned action to actionlist
         self.action = action_list.copy()
         #print("action=",self.action)
         return self.action
@@ -377,6 +385,18 @@ class QAgent():
             #env_v.render() 
             if done or (step > max_ticks):
                 break
+        # TODO : Hacer skip de valores leídos por agent hasta el primero del vs
+        # TODO: export output csv with observations for the validation set, Quitar cuando pretrainer y agent_dcn tengan las mismas obs y act
+        with open('a_output_obs.csv' , 'w', newline='') as myfile:
+            wr = csv.writer(myfile)
+            wr.writerows(self.out_obs)
+        # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
+        print("Finished generating validation set observations.")
+        # export output csv with actions for the validation set
+        with open('a_output_act.csv' , 'w', newline='') as myfile:
+            wr = csv.writer(myfile)
+            wr.writerows(self.out_act)
+        print("Finished generating validation set actions per observation.")
         lw = 2
         y_rbf = balance
         y_v = equity
