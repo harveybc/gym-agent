@@ -160,7 +160,7 @@ class QAgent():
        
         model.add(Conv1D(128, 3, stride=1, padding=1, use_bias=False))
         model.add(BatchNormalization())
-        model.add(Activation('relu'))
+        model.add(Activation('relu')) 
        
         model.add(MaxPooling1D(pool_size=3, strides=2))
         
