@@ -211,6 +211,7 @@ class QAgent():
         self.vs_num_columns = len(self.vs_data[0])
         self.num_f = self.vs_num_columns - self.num_s
         self.num_features = self.num_f // self.window_size
+        self.num_ticks = self.vs_num_ticks
 
     ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
