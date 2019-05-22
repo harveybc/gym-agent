@@ -179,14 +179,11 @@ class QAgent():
         #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
         #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
         return paralell_model
-    ## Generate DCN  input matrix
-    # data is an observation row
     
+    ## Generate DCN  input matrix
     def dcn_input(self, data):
         #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
         obs_matrix = []
-        # print ("len(data[0])=",len(data[0]))
-        self.num_features =  len(data[0])//self.window_size
         obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
         # for each observation
         data_p = np.array(data)
@@ -350,8 +347,10 @@ class QAgent():
             self.raw_action = self.decide_next_action(normalized_observation)
             action = self.transform_action(order_status)
             observation_prev = observation.copy()
-           #if step > 1:
-            #    print("a=", action, " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+            # TODO: Test, quitar cuando coincidan observations de agent_dcn y pretrainer
+            if step > 1:
+                #print("a=", raw_action[0], " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
+                print("observation")
             if (step < 3 ) or (step > (self.vs_num_ticks-self.obsticks)):
                 print ("Skippig limits, step = ", step)
                 # action = nop

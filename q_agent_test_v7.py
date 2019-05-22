@@ -421,7 +421,7 @@ if __name__ == '__main__':
         print("Testing signal ",8+i)
         agent.test_action = i
         agent.load_action_models()
-        balance,score = agent.evaluate(6000)
+        balance,score = agent.evaluate(60)
         scores.append(score)
         balances.append(balance)
     print("Results:")
