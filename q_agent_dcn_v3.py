@@ -397,7 +397,7 @@ class QAgent():
         out_obs_n = np.array(self.out_obs)
         with open('a_output_obs.csv' , 'w', newline='') as myfile:
             wr = csv.writer(myfile)
-            wr.writerows(self.out_obs_n)
+            wr.writerows(out_obs_n)
         # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         print("Finished generating validation set observations.")
         # export output csv with actions for the validation set
