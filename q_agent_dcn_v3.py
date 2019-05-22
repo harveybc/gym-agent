@@ -203,7 +203,11 @@ class QAgent():
 
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self, signal):
-        self.svr_rbf = load_model(self.model_prefix + str(signal)+'.dcn') 
+        self.svr_rbf = load_model(self.model_prefix + str(signal)+'.dcn')
+        # get the number of observations
+        self.vs_data = genfromtxt(self.vs_f, delimiter=',')
+        self.vs_num_ticks = len(self.vs_data)
+        self.vs_num_columns = len(self.vs_data[0])
 
     ## For an observation for each tick, returns 0 if the slope of the future(10) MACD signal (output 16 zero-based) is negative, 1 if its positive. 
     def decide_next_action(self, normalized_observation):
