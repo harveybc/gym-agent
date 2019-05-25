@@ -229,6 +229,8 @@ class QAgent():
         obs = self.dcn_input(vs_r)
         action_list[0] = self.svr_rbf.predict(obs)
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
+        # TODO: Add Normalized obervation to test if the cdn_input function is working well
+        
         self.out_obs.append(obs)
         # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         self.out_act.append(action_list[0])
