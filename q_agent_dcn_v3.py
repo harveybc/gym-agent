@@ -277,7 +277,8 @@ class QAgent():
         #print("len(mask)", len(self.mask))
         n_obs=np.array(n_o)
         n_obs = n_obs[self.mask]
-        return n_obs
+        return n_obs  
+    
     
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
