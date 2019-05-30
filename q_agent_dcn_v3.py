@@ -402,7 +402,7 @@ class QAgent():
         # TODO : Hacer skip de valores leídos por agent hasta el primero del vs
         # TODO: export output csv with observations for the validation set, Quitar cuando pretrainer y agent_dcn tengan las mismas obs y act
         out_obs_n = np.array(self.out_obs)
-        print("self.out_obs.shape = ", self.out_obs_n.shape)
+        print("out_obs_n.shape = ", out_obs_n.shape)
         with open('a_output_obs.csv' , 'w', newline='') as myfile:
             wr = csv.writer(myfile)
             wr.writerows(out_obs_n)
