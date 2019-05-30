@@ -390,7 +390,10 @@ class QAgent():
             balance.append(info['balance'])
             
             # TODO: Hacer gráfico de balance y equity
-            normalized_observation = self.normalize_observation(observation, observation_prev)
+            if (step < ((3*self.num_ticks)//4)+3) or (step > (self.vs_num_ticks-self.obsticks)):
+                normalized_observation = normalized_observation
+            else:
+                normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
             if done or (step > max_ticks):
@@ -399,6 +402,7 @@ class QAgent():
         # TODO : Hacer skip de valores leídos por agent hasta el primero del vs
         # TODO: export output csv with observations for the validation set, Quitar cuando pretrainer y agent_dcn tengan las mismas obs y act
         out_obs_n = np.array(self.out_obs)
+        print("self.out_obs.shape = ", self.out_obs.shape)
         with open('a_output_obs.csv' , 'w', newline='') as myfile:
             wr = csv.writer(myfile)
             wr.writerows(out_obs_n)
