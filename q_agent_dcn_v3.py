@@ -231,7 +231,9 @@ class QAgent():
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         
-        self.out_obs.append(obs)
+        
+        self.out_obs.append(normalized_observation)
+        #self.out_obs.append(obs)
         # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         self.out_act.append(action_list[0])
         # seto the returned action to actionlist
