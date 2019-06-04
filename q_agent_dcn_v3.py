@@ -246,6 +246,7 @@ class QAgent():
     # input obs_matrix, prev obs_matrix, output:row
     def normalize_observation(self, observation, observation_prev):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
+        # TODO: PORQUE num_columns_o es29?
         n_obs = []
         num_columns_o = len(observation)
         print("num_columns_o = ", num_columns_o)
