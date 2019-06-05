@@ -249,7 +249,7 @@ class QAgent():
         # TODO: PORQUE num_columns_o es29?
         n_obs = []
         num_columns_o = len(observation)
-        print("num_columns_o = ", num_columns_o)
+        # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
         for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
@@ -263,6 +263,8 @@ class QAgent():
             # l_dif = l_obs - l_obs_prev
             l_dif = list( map(sub, l_obs, l_obs_prev) )
             for l in l_obs:
+                n_obs.append(l)
+            for l in l_dif:
                 n_obs.append(l)
         #for i in range(0,10):
         #    n_obs.append(0) 
