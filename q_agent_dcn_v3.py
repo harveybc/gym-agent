@@ -265,7 +265,7 @@ class QAgent():
             for l in l_obs:
                 n_obs.append(l)
             for l in l_dif:
-                n_obs.append(l)
+                n_obs.append(l) 
         #for i in range(0,10):
         #    n_obs.append(0) 
         #apply pre-processing
