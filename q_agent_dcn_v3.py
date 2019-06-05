@@ -248,7 +248,6 @@ class QAgent():
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         # TODO: PORQUE num_columns_o es29?
         n_obs = []
-        l_diff = []
         num_columns_o = len(observation)
         # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
@@ -263,6 +262,7 @@ class QAgent():
             l_obs_prev = list(observation_prev[i])   
             # l_diff = l_obs - l_obs_prev
             #l_dif = list( map(sub, l_obs, l_obs_prev) )
+            l_diff = []
             for j in range (0, self.window_size):
                 diff = l_obs[j] - l_obs_prev[j]
                 l_diff.append(diff)
@@ -282,8 +282,8 @@ class QAgent():
         #apply feature selection.
         #print("n_o=",n_o)
         #print("mask=",self.mask)
-        print("len(n_o)=",len(n_o))
-        print("len(mask)", len(self.mask))
+        #print("len(n_o)=",len(n_o))
+        #print("len(mask)", len(self.mask))
         n_obs=np.array(n_o)
         n_obs = n_obs[self.mask]
         return n_obs  
