@@ -274,7 +274,8 @@ class QAgent():
         #    n_obs.append(0)  
         #apply pre-processing
         try: 
-            n_obs_o = self.pt.transform(np.array(n_obs).reshape(1,-1))
+            n_obs_n = np.array(n_obs).reshape(1,-1)
+            n_obs_o = self.pt.transform(n_obs_n)
         except:
             e0 = sys.exc_info()[0]
             e1 = sys.exc_info()[1]
@@ -283,7 +284,7 @@ class QAgent():
             print("Error[0]: ", e0 )
             print("Error[1]: ", e1 )
             print("Error[2]: ", e2 )
-            print("n_obs=", np.array(n_obs).reshape(1,-1))
+            print("n_obs_n[0]=", np.array(n_obs[0]).reshape(1,-1))
         #n_obs = np.array(n_obs).reshape(1,-1) 
         n_o = n_obs_o[0].tolist()
         #print("n_o=",n_o)
