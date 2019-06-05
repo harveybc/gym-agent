@@ -376,7 +376,11 @@ class QAgent():
         tp = 1.0
         sl = 1.0
         vol  = 1.0
-        # Create the action list output [tp, sl, vol, dir]
+        score = 0.0
+        step = 1
+        order_status=0
+        equity=[]
+        balance=[]        # Create the action list output [tp, sl, vol, dir]
         action.append(tp)
         action.append(sl)
         action.append(vol)  
@@ -388,13 +392,10 @@ class QAgent():
         balance.append(info['balance'])
         
         #TODO: ERROR
+        # normalize observation appended with its return obtained from previous and current observations
         normalized_observation = agent.normalize_observation(observation, observation_prev) 
         #print("normalized_observation = ", normalized_observation)
-        score = 0.0
-        step = 1
-        order_status=0
-        equity=[]
-        balance=[]
+
         while 1:
             step += 1
             # si el step > 2, hacce el resto, sono usa vector e zeros como accion 
