@@ -251,10 +251,10 @@ class QAgent():
         num_columns_o = len(observation)
         # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
-        for i in range (0, num_columns_o):
-            l_obs = list(observation[i])   
-            for j in l_obs:
-                n_obs.append(j)
+        #for i in range (0, num_columns_o):
+        #    l_obs = list(observation[i])   
+        #    for j in l_obs:
+        #        n_obs.append(j)
         # append list of the returned values 
         # TODO: Cambiar a recorrido de l_obs restando el anterior y solo usar l_obs_prev para el primer elemento
         for i in range (0, num_columns_o):
