@@ -277,6 +277,9 @@ class QAgent():
             n_obs_o = self.pt.transform(np.array(n_obs).reshape(1,-1))
         except:
             e = sys.exc_info()[0]
+            e = sys.exc_info()[1]
+            e = sys.exc_info()[2]
+            
             print("Error: ", e )
             print("n_obs=", n_obs)
         #n_obs = np.array(n_obs).reshape(1,-1) 
