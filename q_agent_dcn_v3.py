@@ -365,12 +365,33 @@ class QAgent():
     def evaluate(self, max_ticks):
         # calculate the validation set score
         hist_scores = []
+        #perform first observation
         observation = self.env_v.reset()
         #print("observation = ", observation)
-        normalized_observation = agent.normalize_observation(observation, observation) 
+        observation_prev = observation.copy()
+        # action = nop
+        action = []
+        # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
+        dire = 0.0
+        tp = 1.0
+        sl = 1.0
+        vol  = 1.0
+        # Create the action list output [tp, sl, vol, dir]
+        action.append(tp)
+        action.append(sl)
+        action.append(vol)  
+        action.append(dire)
+        #do second observation tobe able to normalize following observations
+        observation, reward, done, info = self.env_v.step(action)
+        order_status=info['order_status']
+        equity.append(info['equity'])
+        balance.append(info['balance'])
+        
+        #TODO: ERROR
+        normalized_observation = agent.normalize_observation(observation, observation_prev) 
         #print("normalized_observation = ", normalized_observation)
         score = 0.0
-        step = 0
+        step = 1
         order_status=0
         equity=[]
         balance=[]
