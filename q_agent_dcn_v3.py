@@ -271,7 +271,7 @@ class QAgent():
             for l in l_dif:
                 n_obs.append(l) 
         #for i in range(0,10):
-        #    n_obs.append(0) 
+        #    n_obs.append(0)  
         #apply pre-processing
         n_obs = self.pt.transform(np.array(n_obs).reshape(1,-1))
         #n_obs = np.array(n_obs).reshape(1,-1) 
