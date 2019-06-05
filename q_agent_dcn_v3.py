@@ -263,7 +263,7 @@ class QAgent():
             l_obs_prev = list(observation_prev[i])   
             # l_diff = l_obs - l_obs_prev
             #l_dif = list( map(sub, l_obs, l_obs_prev) )
-            for j in range (0, len(l_obs)):
+            for j in range (0, self.window_size):
                 diff = l_obs[j] - l_obs_prev[j]
                 l_diff.append(diff)
             for l in l_obs:
