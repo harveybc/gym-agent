@@ -282,6 +282,7 @@ class QAgent():
         #apply pre-processing
         n_obs_n = np.array(n_obs).reshape(1,-1)
         n_obs_o = self.pt.transform(n_obs_n)
+        # TODO: en exccepción agregar vector de zeros n_obs_n para mitifar caso inf.
         #except:
         #    e0 = sys.exc_info()[0]
         #    e1 = sys.exc_info()[1]
