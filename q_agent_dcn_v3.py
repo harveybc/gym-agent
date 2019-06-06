@@ -293,7 +293,7 @@ class QAgent():
             print("Error[2]: ", e2 )
             np.set_printoptions(threshold=sys.maxsize)
             #print("n_obs_n[0]=", n_obs_n[0])
-            n_obs_o = np.zeros(num_columns_o * self.window_size)
+            n_obs_o = np.zeros(num_columns_o * self.window_size) 
         #n_obs = np.array(n_obs).reshape(1,-1) 
         n_o = n_obs_o[0].tolist()
         #print("n_o=",n_o)
