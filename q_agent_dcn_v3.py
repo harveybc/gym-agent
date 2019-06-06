@@ -269,13 +269,13 @@ class QAgent():
             for l in l_obs:
                 n_obs.append(l)
             # TODO: cambiar por l_diff después dde prueba
-            for l in l_obs:
+            for l in l_diff:
                 n_obs.append(l) 
         #for i in range(0,10):
         #    n_obs.append(0)  
         #apply pre-processing
         try: 
-            n_obs_n = np.array(n_obs).reshape(1,-1)
+            n_obs_n = np.array(n_obs).reshape(-1,1)
             n_obs_o = self.pt.transform(n_obs_n)
         except:
             e0 = sys.exc_info()[0]
