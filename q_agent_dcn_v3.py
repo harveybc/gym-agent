@@ -280,19 +280,20 @@ class QAgent():
         #for i in range(0,10):
         #    n_obs.append(0)  
         #apply pre-processing
-        n_obs_n = np.array(n_obs).reshape(1,-1)
-        n_obs_o = self.pt.transform(n_obs_n)
-        # TODO: en exccepción agregar vector de zeros n_obs_n para mitifar caso inf.
-        #except:
-        #    e0 = sys.exc_info()[0]
-        #    e1 = sys.exc_info()[1]
-        #    e2 = sys.exc_info()[2]
-        #    
-        #    print("Error[0]: ", e0 )
-        #    print("Error[1]: ", e1 )
-        #    print("Error[2]: ", e2 )
-        #    np.set_printoptions(threshold=sys.maxsize)
-        #    print("n_obs_n[0]=", n_obs_n[0])
+        try: 
+            n_obs_n = np.array(n_obs).reshape(1,-1)
+            n_obs_o = self.pt.transform(n_obs_n)
+        except:
+            e0 = sys.exc_info()[0]
+            e1 = sys.exc_info()[1]
+            e2 = sys.exc_info()[2]
+            
+            print("Error[0]: ", e0 )
+            print("Error[1]: ", e1 )
+            print("Error[2]: ", e2 )
+            np.set_printoptions(threshold=sys.maxsize)
+            #print("n_obs_n[0]=", n_obs_n[0])
+            n_obs_o = np.zeros(num_columns_o * self.window_size)
         #n_obs = np.array(n_obs).reshape(1,-1) 
         n_o = n_obs_o[0].tolist()
         #print("n_o=",n_o)
