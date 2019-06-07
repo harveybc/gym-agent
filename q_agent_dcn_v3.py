@@ -283,7 +283,7 @@ class QAgent():
         #apply pre-processing
         #try:  
         np.set_printoptions(threshold=sys.maxsize)
-        print("n_obs = ", n_obs)
+        print("n_obs = ", n_obs) 
         n_obs_n = np.array(n_obs).reshape(1,-1)
         
         #TODO: quitar después de prueba
