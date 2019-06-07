@@ -249,7 +249,7 @@ class QAgent():
         # TODO: PORQUE num_columns_o es29?
         n_obs = []
         l_diff = []
-        print("observation = ", observation)
+        #print("observation = ", observation)
         num_columns_o = len(observation)
         # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
@@ -283,13 +283,13 @@ class QAgent():
         #    n_obs.append(0)  
         #apply pre-processing
         #try:  
-        np.set_printoptions(threshold=sys.maxsize)
-        print("n_obs = ", n_obs) 
+        #np.set_printoptions(threshold=sys.maxsize)
+        #print("n_obs = ", n_obs) 
         n_obs_n = np.array(n_obs).reshape(1,-1)
         
         #TODO: quitar después de prueba
         
-        print("n_obs_n = ", n_obs_n)
+        #print("n_obs_n = ", n_obs_n)
         # fin TODO
         n_obs_o = self.pt.transform(n_obs_n)
         #except:
