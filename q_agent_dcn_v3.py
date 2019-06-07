@@ -201,7 +201,6 @@ class QAgent():
             obs_matrix.append(obs.copy())
         return np.array(obs_matrix)
 
-
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self, signal):
         self.svr_rbf = load_model(self.model_prefix + str(signal)+'.dcn')
@@ -246,77 +245,31 @@ class QAgent():
     # input obs_matrix, prev obs_matrix, output:row
     def normalize_observation(self, observation, observation_prev):
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
-        # TODO: PORQUE num_columns_o es29?
-        n_obs = []
+        # TODO: PORQUE num_columns_o es 29?
+        n_obs = [] 
         l_diff = []
         #print("observation = ", observation)
         num_columns_o = len(observation)
-        # print("num_columns_o = ", num_columns_o)
-        # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
-        #for i in range (0, num_columns_o):
-        #    l_obs = list(observation[i])   
-        #    for j in l_obs:
-        #        n_obs.append(j)
-        # append list of the returned values 
         # TODO: Cambiar a recorrido de l_obs restando el anterior y solo usar l_obs_prev para el primer elemento
         for i in range (0, num_columns_o):
             l_obs = list(observation[i])   
             l_obs_prev = list(observation_prev[i])   
-            # l_diff = l_obs - l_obs_prev
-            #l_dif = list( map(sub, l_obs, l_obs_prev) )
-           
             for j in range (0, self.window_size):
                 diff = l_obs[j] - l_obs_prev[j]
-                #TODO:Quitar después de prueba
-                #if diff == 0:
-                #    diff = 0.0000001
                 l_diff.append(diff)
             for l in l_obs:
-                #TODO:Quitar después de prueba
-                #if l == 0:
-                #    l = 0.0000001
                 n_obs.append(l)
-            # TODO: cambiar por l_diff después dde prueba
+                
         for l in l_diff:
             n_obs.append(l) 
-        #for i in range(0,10):
-        #    n_obs.append(0)  
-        #apply pre-processing
-        #try:  
-        #np.set_printoptions(threshold=sys.maxsize)
-        #print("n_obs = ", n_obs) 
         n_obs_n = np.array(n_obs).reshape(1,-1)
-        
         #TODO: quitar después de prueba
-        
-        #print("n_obs_n = ", n_obs_n)
-        # fin TODO
-        n_obs_o = self.pt.transform(n_obs_n)
-        #except:
-        #    e0 = sys.exc_info()[0]
-        #    e1 = sys.exc_info()[1]
-        #    e2 = sys.exc_info()[2]    
-        #    print("Error[0]: ", e0 )
-        #    print("Error[1]: ", e1 )
-        #    print("Error[2]: ", e2 )
-        #    np.set_printoptions(threshold=sys.maxsize)
-        #    #print("n_obs_n[0]=", n_obs_n[0])
-        #    n_obs_t = np.zeros(2 * num_columns_o * self.window_size) 
-        #    n_obs_o = np.array(n_obs_t).reshape(1,-1)
-        #n_obs = np.array(n_obs).reshape(1,-1) 
+        # n_obs_o = self.pt.transform(n_obs_n)
+        n_obs_o = n_obs_n
         n_o = n_obs_o[0].tolist()
-        #print("n_o=",n_o)
-        #for i in range(0,9):
-        #    n_o.append(0)
-        #apply feature selection.
-        #print("n_o=",n_o)
-        #print("mask=",self.mask)
-        #print("len(n_o)=",len(n_o))
-        #print("len(mask)", len(self.mask))
         n_obs=np.array(n_o)
         n_obs = n_obs[self.mask]
         return n_obs  
-    
     
     ## Function transform_action: convert the output of the raw_action into the
     ## denormalized values to be used in the simulation environment.
