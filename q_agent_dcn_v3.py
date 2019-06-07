@@ -281,7 +281,7 @@ class QAgent():
         #for i in range(0,10):
         #    n_obs.append(0)  
         #apply pre-processing
-        #try: 
+        #try:  
         np.set_printoptions(threshold=sys.maxsize)
         print("n_obs = ", n_obs)
         n_obs_n = np.array(n_obs).reshape(1,-1)
