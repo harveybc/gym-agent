@@ -248,6 +248,7 @@ class QAgent():
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         # TODO: PORQUE num_columns_o es29?
         n_obs = []
+        l_diff = []
         print("observation = ", observation)
         num_columns_o = len(observation)
         # print("num_columns_o = ", num_columns_o)
@@ -263,7 +264,7 @@ class QAgent():
             l_obs_prev = list(observation_prev[i])   
             # l_diff = l_obs - l_obs_prev
             #l_dif = list( map(sub, l_obs, l_obs_prev) )
-            l_diff = []
+           
             for j in range (0, self.window_size):
                 diff = l_obs[j] - l_obs_prev[j]
                 #TODO:Quitar después de prueba
