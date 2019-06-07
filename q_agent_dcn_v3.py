@@ -342,7 +342,7 @@ class QAgent():
         #perform first observation
         observation = self.env_v.reset()
         #print("observation = ", observation)
-        observation_prev = observation.copy()
+        observation_prev = observation.deepcopy()
         # action = nop
         action = []
         # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
@@ -373,7 +373,7 @@ class QAgent():
         while 1:
             step += 1
             # si el step > 2, hacce el resto, sono usa vector e zeros como accion 
-            observation_prev = observation.copy()
+            observation_prev = observation.deepcopy()
             # TODO: Test, quitar cuando coincidan observations de agent_dcn y pretrainer
             #if step > 1:
             #    #print("a=", raw_action[0], " order_status=",info['order_status'], " num_closes=", info['num_closes']," balance=",info['balance'], " equity=", info['equity'])
