@@ -248,7 +248,7 @@ class QAgent():
         # observation is a list with size num_features of numpy.deque of size 30 (time window) 
         # TODO: PORQUE num_columns_o es29?
         n_obs = []
-        
+        print("observation = ", observation)
         num_columns_o = len(observation)
         # print("num_columns_o = ", num_columns_o)
         # compose list from observation matrix similar to a row of the training set output from q-datagen (tick contiguous per feature)
@@ -283,7 +283,7 @@ class QAgent():
         #apply pre-processing
         #try: 
         np.set_printoptions(threshold=sys.maxsize)
-        print("n_obs = ", n_obs_n)
+        print("n_obs = ", n_obs)
         n_obs_n = np.array(n_obs).reshape(1,-1)
         
         #TODO: quitar después de prueba
