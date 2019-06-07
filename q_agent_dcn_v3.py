@@ -276,8 +276,8 @@ class QAgent():
                 #    l = 0.0000001
                 n_obs.append(l)
             # TODO: cambiar por l_diff después dde prueba
-            for l in l_diff:
-                n_obs.append(l) 
+        for l in l_diff:
+            n_obs.append(l) 
         #for i in range(0,10):
         #    n_obs.append(0)  
         #apply pre-processing
