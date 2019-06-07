@@ -452,7 +452,7 @@ class QAgent():
             # TODO: Hacer gráfico de balance y equity
             if (step < ((3*self.num_ticks)//4)+3) or (step > (self.vs_num_ticks-self.obsticks)):
                 normalized_observation = normalized_observation
-            else:
+            else: 
                 normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
