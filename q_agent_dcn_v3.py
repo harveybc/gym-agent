@@ -227,17 +227,18 @@ class QAgent():
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
         obs = self.dcn_input(vs_r)
+        
         action_list[0] = self.svr_rbf.predict(obs)
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         
         
-        self.out_obs.append(normalized_observation)
+        self.out_obs.append(copy.deepcopy(obs))
         #self.out_obs.append(obs)
         # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
-        self.out_act.append(action_list[0])
+        self.out_act.append(copy.deepcopy(action_list[0]))
         # seto the returned action to actionlist
-        self.action = action_list.copy()
+        self.action = copy.deepcopy(action_list)
         #print("action=",self.action)
         return self.action
 
@@ -264,7 +265,6 @@ class QAgent():
         for l in l_diff:
             n_obs.append(l) 
         n_obs_n = np.array(n_obs).reshape(1,-1)
-        #TODO: quitar después de prueba
         n_obs_o = self.pt.transform(n_obs_n)
         n_o = n_obs_o[0].tolist()
         n_obs=np.array(n_o)
