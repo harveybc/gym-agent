@@ -265,8 +265,7 @@ class QAgent():
             n_obs.append(l) 
         n_obs_n = np.array(n_obs).reshape(1,-1)
         #TODO: quitar después de prueba
-        # n_obs_o = self.pt.transform(n_obs_n)
-        n_obs_o = n_obs_n
+        n_obs_o = self.pt.transform(n_obs_n)
         n_o = n_obs_o[0].tolist()
         n_obs=np.array(n_o)
         n_obs = n_obs[self.mask]
@@ -407,8 +406,6 @@ class QAgent():
             if (step < ((3*self.num_ticks)//4)+3) or (step > (self.vs_num_ticks-self.obsticks)):
                 normalized_observation = normalized_observation
             else: 
-                print("observation = ", observation)
-                print("observation_prev = ", observation_prev)
                 normalized_observation = self.normalize_observation(observation, observation_prev)
             score += reward
             #env_v.render() 
