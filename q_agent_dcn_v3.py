@@ -24,7 +24,7 @@ from joblib import dump, load
 from sklearn import preprocessing
 from keras.models import Sequential, load_model
 from keras.layers import Conv2D,Conv1D, MaxPooling2D, MaxPooling1D
-from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization
+from keras.layers import Activation, Dropout, Flatten, Dense, BatchNormalization, TimeDistributed
 from keras.optimizers import SGD, Adamax
 import copy
             
