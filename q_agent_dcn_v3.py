@@ -142,49 +142,36 @@ class QAgent():
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        # model.add(Dropout(0.6,input_shape=(self.num_features,self.window_size)))
-        model.add(Conv1D(48, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size)))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-        
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
-        model.add(Conv1D(128, 3, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
-        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(Conv1D(128, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu')) 
-       
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
+        model.add(Conv1D(512, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size))) 
+        model.add(BatchNormalization())  
+        model.add(Activation('relu'))        
+        model.add(Conv1D(256, 3, use_bias=False)) 
+        model.add(BatchNormalization())  
+        model.add(Activation('relu'))        
+        #model.add(Dropout(0.6))
+        #model.add(Conv1D(8, 3, use_bias=False))
+        #model.add(BatchNormalization())
+        #model.add(Activation('relu'))        
+        model.add(LSTM(units = 256, input_shape=(self.num_features,self.window_size))) 
+        model.add(BatchNormalization()) 
+        #model.add(LSTM(units = 32, return_sequences = True, dropout = 0.4,  input_shape=(self.num_features,self.window_size)))            
+        #model.add(LSTM(units = 16, return_sequences = True, dropout = 0.4, input_shape=(self.num_features,self.window_size)))                        
+        #model.add(LSTM(units=32, dropout = 0.4, recurrent_dropout = 0.6 ))
+        #model.add(BatchNormalization()) 
         model.add(Dense(640)) 
-        model.add(Dropout(0.2))
-        model.add(Dense(640)) 
-        model.add(Dropout(0.2))
-        model.add(Dense(256))
-        # multi-GPU support
-        #model = to_multi_gpu(model)
-        #self.reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, min_lr=1e-4)
+        model.add(BatchNormalization())
+        model.add(Activation('hard_sigmoid'))
+        #model.add(Dropout(0.2))
+        model.add(Dense(320)) 
+        model.add(BatchNormalization())
+        model.add(Activation('hard_sigmoid'))
+        #model.add(Dropout(0.2))
+        model.add(Dense(1, activation = 'linear')) 
         # use SGD optimizer
         opt = Adamax(lr=self.learning_rate)
-        #opt = SGD(lr=self.learning_rate, momentum=0.9)
         #paralell_model = multi_gpu_model(model, gpus=2)
-        paralell_model = model
-        paralell_model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
-        #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
-        #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
+        paralell_model = model 
+        model.compile(loss="mse", optimizer=opt, metrics=["mae"])
         return paralell_model
     
     ## Generate DCN  input matrix
