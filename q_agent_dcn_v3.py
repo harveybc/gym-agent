@@ -8,6 +8,8 @@ from gym.envs.registration import register
 import sys
 import neat
 import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 from joblib import load
 from sklearn import svm
 import numpy as np
@@ -233,7 +235,7 @@ class QAgent():
         print("obs.shape = ", obs.shape)
         
         action_list[0] = self.svr_rbf.predict(obs)
-        prit("action_list[0] = ", action_list[0])
+        print("action_list[0] = ", action_list[0])
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         self.out_obs.append(copy.deepcopy(obs))
