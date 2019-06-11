@@ -227,8 +227,13 @@ class QAgent():
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
         obs = self.dcn_input(vs_r)
+        
+        np.set_printoptions(threshold=sys.maxsize)
         print("obs = ", obs)
+        print("obs.shape = ", obs.shape)
+        
         action_list[0] = self.svr_rbf.predict(obs)
+        prit("action_list[0] = ", action_list[0])
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         self.out_obs.append(copy.deepcopy(obs))
