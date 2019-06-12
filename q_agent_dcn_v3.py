@@ -169,7 +169,7 @@ class QAgent():
         #model.add(Dropout(0.2))
         model.add(Dense(1, activation = 'linear')) 
         # use SGD optimizer
-        opt = Adamax(lr=self.learning_rate)
+        opt = Adamax(lr=0.0001)
         #paralell_model = multi_gpu_model(model, gpus=2)
         paralell_model = model 
         model.compile(loss="mse", optimizer=opt, metrics=["mae"])
