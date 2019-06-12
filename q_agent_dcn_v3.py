@@ -9,7 +9,7 @@ import sys
 import neat
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 from joblib import load
 from sklearn import svm
 import numpy as np
@@ -143,7 +143,7 @@ class QAgent():
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        model.add(Conv1D(512, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size))) 
+        model.add(Conv1D(512, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size), data_format='channels_first'))  
         model.add(BatchNormalization())  
         model.add(Activation('relu'))        
         model.add(Conv1D(256, 3, use_bias=False)) 
