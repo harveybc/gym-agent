@@ -19,7 +19,7 @@ import operator
 from numpy import genfromtxt
 import csv
 from sklearn import svm
-from operator import add,sub
+from operator import add, sub
 from joblib import dump, load
 from sklearn import preprocessing
 from keras.models import Sequential, load_model
