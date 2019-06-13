@@ -9,7 +9,7 @@ import sys
 import neat
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 from joblib import load
 from sklearn import svm
 import numpy as np
@@ -143,10 +143,10 @@ class QAgent():
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
         # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        model.add(Conv1D(512, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size), data_format='channels_first'))  
+        model.add(Conv1D(256, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size), data_format='channels_first'))  
         model.add(BatchNormalization())  
         model.add(Activation('relu'))        
-        model.add(Conv1D(256, 3, use_bias=False)) 
+        model.add(Conv1D(128, 3, use_bias=False)) 
         model.add(BatchNormalization())  
         model.add(Activation('relu'))        
         #model.add(Dropout(0.6))
@@ -179,17 +179,28 @@ class QAgent():
     def dcn_input(self, data):
         #obs_matrix = np.array([np.array([0.0] * self.num_features)]*len(data), dtype=object)
         obs_matrix = []
-        obs = np.array([np.array([0.0] * self.window_size)] * self.num_features)
+        obs_row = []
+        obs_frame = []
+        obs = np.array([np.array([0.0] * self.num_features)] * self.window_size)
         # for each observation
         data_p = np.array(data)
-        for i, ob in enumerate(data):
-            # for each feature, add an array of window_size elements
-            for j in range(0,self.num_features):
-                #print("obs=",obs)
-                #print("data_p=",data_p[i, j * self.window_size : (j+1) * self.window_size])
-                obs[j] = data_p[i, j * self.window_size : (j+1) * self.window_size]
-                #obs[j] = ob[0]
-            obs_matrix.append(obs.copy())
+        num_rows = len(data)
+        # counter of rows of data array
+        c_row = 0
+        while c_row < num_rows:
+            # invert the order of the observations, in the first element is the newest value
+            obs_frame = []
+            for j in range(0,self.window_size):
+                # create an array of size num_features 
+                obs_row = []
+                for k in range(0,self.num_features):
+                    obs_row.append(data_p[c_row, k*self.window_size + j ])
+                # obs_frame contains window_size rows with num_features columns with the newest observation in cell[0]
+                obs_frame.append(copy.deepcopy(obs_row))
+            # obs_matrix contains files with observations of size (window_Size, num_features)
+            obs_matrix.append(copy.deepcopy(obs_frame))
+            c_row = c_row + 1
+        print("Formating of data for DCN input performed succesfully.")
         return np.array(obs_matrix)
 
     ## the action model is the same q-datagen generated dataset
