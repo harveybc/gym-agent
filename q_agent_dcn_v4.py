@@ -1,5 +1,5 @@
-# agent_dcn_v3: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
-# This version uses a dynamic TP and SL depending on the magnitude of the action 
+# agent_dcn_v4: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
+# v4 do not use timedistributed and swap axes of inputs
 
 import gym
 import gym.wrappers
@@ -142,18 +142,18 @@ class QAgent():
     def set_dcn_model(self):
         # Deep Convolutional Neural Network for Regression
         model = Sequential()
-        # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        model.add(Conv1D(256, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size), data_format='channels_first'))  
-        model.add(BatchNormalization())  
-        model.add(Activation('relu'))        
-        model.add(Conv1D(128, 3, use_bias=False)) 
-        model.add(BatchNormalization())  
-        model.add(Activation('relu'))        
+        # input shape (<num_timesteps>, <num_features>) in the default data_format='channel_last'
+        model.add(Conv1D(512, 5, strides = 2, use_bias = False, activation = 'relu', input_shape=(self.num_features, self.window_size)))
+        model.add(BatchNormalization())       
+        model.add(Conv1D(256, 3, use_bias=False, activation = 'relu'))
+        model.add(BatchNormalization())
+        
+        #model.add(TimeDistributed(Flatten()))
         #model.add(Dropout(0.6))
         #model.add(Conv1D(8, 3, use_bias=False))
-        #model.add(BatchNormalization()) 
+        #model.add(BatchNormalization())
         #model.add(Activation('relu'))        
-        model.add(LSTM(units = 256, input_shape=(self.num_features,self.window_size))) 
+        model.add(LSTM(units = 512)) 
         model.add(BatchNormalization()) 
         #model.add(LSTM(units = 32, return_sequences = True, dropout = 0.4,  input_shape=(self.num_features,self.window_size)))            
         #model.add(LSTM(units = 16, return_sequences = True, dropout = 0.4, input_shape=(self.num_features,self.window_size)))                        
@@ -169,11 +169,11 @@ class QAgent():
         #model.add(Dropout(0.2))
         model.add(Dense(1, activation = 'linear')) 
         # use SGD optimizer
-        opt = Adamax(lr=0.0001)
+        opt = Adamax(lr=self.learning_rate)
         #paralell_model = multi_gpu_model(model, gpus=2)
         paralell_model = model 
         model.compile(loss="mse", optimizer=opt, metrics=["mae"])
-        return paralell_model
+        return paralell_model 
     
     ## Generate DCN  input matrix
     def dcn_input(self, data):
@@ -230,8 +230,13 @@ class QAgent():
         obs = self.dcn_input(vs_r)
         
         np.set_printoptions(threshold=sys.maxsize)
+        
+        self.x = np.swapaxes(self.x, 1, 2)
+        
         print("obs = ", obs)
         print("obs.shape = ", obs.shape)
+        
+        
         
         action_list[0] = self.svr_rbf.predict(obs)
         print("action_list[0] = ", action_list[0])
