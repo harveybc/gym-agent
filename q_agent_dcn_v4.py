@@ -231,7 +231,7 @@ class QAgent():
         
         np.set_printoptions(threshold=sys.maxsize)
         
-        self.x = np.swapaxes(self.x, 1, 2)
+        obs = np.swapaxes(obs, 1, 2)
         
         print("obs = ", obs)
         print("obs.shape = ", obs.shape)
