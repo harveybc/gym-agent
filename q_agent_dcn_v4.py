@@ -461,7 +461,7 @@ class QAgent():
 # main function 
 if __name__ == '__main__':
     agent = QAgent()
-    agent.svr_rbf = agent.set_dcn_model()
+    #agent.svr_rbf = agent.set_dcn_model()
     training_signal = 8
     agent.load_action_models(training_signal)
     scores = []
