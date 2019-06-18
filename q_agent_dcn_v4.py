@@ -205,13 +205,13 @@ class QAgent():
         
         obs = np.swapaxes(obs, 1, 2)
         
-        print("obs = ", obs)
-        print("obs.shape = ", obs.shape)
+        #print("obs = ", obs)
+        #print("obs.shape = ", obs.shape)
         
         
         
         action_list[0] = self.svr_rbf.predict(obs)
-        print("action_list[0] = ", action_list[0])
+        #print("action_list[0] = ", action_list[0])
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         self.out_obs.append(copy.deepcopy(obs))
