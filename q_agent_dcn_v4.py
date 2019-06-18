@@ -172,7 +172,7 @@ class QAgent():
             # obs_matrix contains files with observations of size (window_Size, num_features)
             obs_matrix.append(copy.deepcopy(obs_frame))
             c_row = c_row + 1
-        print("Formating of data for DCN input performed succesfully.")
+        #print("Formating of data for DCN input performed succesfully.")
         return np.array(obs_matrix)
 
     ## the action model is the same q-datagen generated dataset
@@ -200,18 +200,12 @@ class QAgent():
         vs_r = np.reshape(vs, (1, -1))
         #print ("vs_r = ",vs_r)
         obs = self.dcn_input(vs_r)
-        
         np.set_printoptions(threshold=sys.maxsize)
-        
         obs = np.swapaxes(obs, 1, 2)
-        
         #print("obs = ", obs)
         #print("obs.shape = ", obs.shape)
-        
-        
-        
         action_list[0] = self.svr_rbf.predict(obs)
-        #print("action_list[0] = ", action_list[0])
+        print("action_list[0] = ", action_list[0])
         # TODO: Add observation to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
         # TODO: Add Normalized obervation to test if the cdn_input function is working well
         self.out_obs.append(copy.deepcopy(obs))
