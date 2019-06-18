@@ -54,7 +54,7 @@ class QAgent():
         # noise0, min_duratopn = 0          bal=241k
         # noise0, min_duration = 20         bal=43k
         # noise 0.25, min_duration = 20     bal=1k
-        self.duration = 0
+        self.duration = 5
         self.min_duration = 1
         # TODO: probar con órdenes que solo se cierran por SL/TP
         # TODO: hacer gridsearch de SL/TP
@@ -91,9 +91,9 @@ class QAgent():
         self.window_size = self.obsticks 
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 300
-        self.max_TP = 3000
+        self.max_TP = 10000
         self.min_SL = 300
-        self.max_SL = 3000  
+        self.max_SL = 10000  
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -146,42 +146,6 @@ class QAgent():
             self.max[i] = float(data[num_parts-1])
             self.min[i] = float(data[num_parts-2])
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
-        
-    def set_dcn_model(self):
-        # Deep Convolutional Neural Network for Regression
-        model = Sequential()
-        # input shape (<num_timesteps>, <num_features>) in the default data_format='channel_last'
-        model.add(Conv1D(512, 5, strides = 2, use_bias = False, activation = 'relu', input_shape=(self.num_features, self.window_size)))
-        model.add(BatchNormalization())       
-        model.add(Conv1D(256, 3, use_bias=False, activation = 'relu'))
-        model.add(BatchNormalization())
-        
-        #model.add(TimeDistributed(Flatten()))
-        #model.add(Dropout(0.6))
-        #model.add(Conv1D(8, 3, use_bias=False))
-        #model.add(BatchNormalization())
-        #model.add(Activation('relu'))        
-        model.add(LSTM(units = 512)) 
-        model.add(BatchNormalization()) 
-        #model.add(LSTM(units = 32, return_sequences = True, dropout = 0.4,  input_shape=(self.num_features,self.window_size)))            
-        #model.add(LSTM(units = 16, return_sequences = True, dropout = 0.4, input_shape=(self.num_features,self.window_size)))                        
-        #model.add(LSTM(units=32, dropout = 0.4, recurrent_dropout = 0.6 ))
-        #model.add(BatchNormalization()) 
-        model.add(Dense(640)) 
-        model.add(BatchNormalization())
-        model.add(Activation('hard_sigmoid'))
-        #model.add(Dropout(0.2))
-        model.add(Dense(320)) 
-        model.add(BatchNormalization())
-        model.add(Activation('hard_sigmoid'))
-        #model.add(Dropout(0.2))
-        model.add(Dense(1, activation = 'linear')) 
-        # use SGD optimizer
-        opt = Adamax(lr=self.learning_rate)
-        #paralell_model = multi_gpu_model(model, gpus=2)
-        paralell_model = model 
-        model.compile(loss="mse", optimizer=opt, metrics=["mae"])
-        return paralell_model 
     
     ## Generate DCN  input matrix
     def dcn_input(self, data):
