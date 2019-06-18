@@ -1,5 +1,13 @@
 # agent_dcn_v4: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
-# v4 do not use timedistributed and swap axes of inputs
+# v4 do not use timedistributed and swap axes of inputs and also seed the random seed for reproducible results
+
+# seed numpy random number generator to enable reproducible results
+print("Seed numpy random number generator")
+from numpy.random import seed
+seed(1)
+print("Seed tensorflow random number generator")
+from tensorflow import set_random_seed
+set_random_seed(2)
 
 import gym
 import gym.wrappers
