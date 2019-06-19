@@ -55,7 +55,10 @@ class QAgent():
         # noise0, min_duration = 20         bal=43k
         # noise 0.25, min_duration = 20     bal=1k
         self.duration = 5
-        self.min_duration = 1
+        self.min_duration = 0
+        self.th_open = 0.2
+        self.th_close = 0.1
+        
         # TODO: probar con órdenes que solo se cierran por SL/TP
         # TODO: hacer gridsearch de SL/TP
         # TODO: en caso ideal sin ruido, probar si ganancia incrementa con volumen controlado por volatility
@@ -270,21 +273,22 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[self.test_action] > 0):
+            if (self.raw_action[self.test_action] > self.th_open):
                 # opens buy order  
                 dire = 1.0
-            else:
+            if (self.raw_action[self.test_action] < (-1.0 * self.th_open)):
+                # opens sell order  
                 dire = -1.0
         # if there is an existing buy order
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[self.test_action] <= 0):
+            if (self.raw_action[self.test_action] <= self.th_close):
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
         if (order_status == -1) and (self.duration > self.min_duration):
             # if action[0]>0, closes the sell order
-            if (self.raw_action[self.test_action] > 0):
+            if (self.raw_action[self.test_action] > (-1*self.th_close)):
                 # closes sell order  
                 dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
