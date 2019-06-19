@@ -355,7 +355,7 @@ class QAgent():
             #    print("observation")
             
             if (step < ((3*self.num_ticks)//4)+4) or (step > (self.vs_num_ticks-self.obsticks)):
-                print ("Skippig limits, step = ", step)
+                #print ("Skippig limits, step = ", step)
                 # action = nop
                 action = []
                 # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
