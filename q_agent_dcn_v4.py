@@ -214,7 +214,7 @@ class QAgent():
         self.out_obs.append(copy.deepcopy(obs))
         #self.out_obs.append(obs)
         # TODO: Add action to output csv file array, Quitar cuando pretreiner y agent_dcn tengan las mismas salidas y entradas
-        self.out_act.append(copy.deepcopy(action_list[0]))
+        self.out_act.append(copy.deepcopy(action_list[0][0]))
         # seto the returned action to actionlist
         self.action = copy.deepcopy(action_list)
         #print("action=",self.action)
