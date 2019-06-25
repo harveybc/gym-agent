@@ -104,6 +104,7 @@ class QAgent():
         self.num_f = 0
         self.num_features = 0
         self.action_prev = []
+        self.action = []
         # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
