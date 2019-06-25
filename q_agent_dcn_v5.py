@@ -113,8 +113,8 @@ class QAgent():
         print("loading pre-processing feature selection mask")
         self.mask = load(self.vs_f+'.feature_selection_mask')
         # variables for output csv files for observations and prediction
-        self.out_obs = []
-        self.out_act = []
+        self.out_obs = [0]
+        self.out_act = [0]
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
@@ -267,6 +267,7 @@ class QAgent():
         tp = 1.0
         sl = 1.0
         vol  = 1.0
+        
         action_diff = self.raw_action[self.test_action] - self.action_prev[self.test_action]
         # TODO: if there is an opened order, increases de duration counter, else set it to 0
         if (order_status==0):
