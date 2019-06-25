@@ -85,7 +85,7 @@ class QAgent():
         self.svr_rbf = svm.SVR(kernel='rbf')
         self.num_s = 19
         self.model = [self.svr_rbf] * self.num_s 
-        self.raw_action = 0
+        
         self.max_index = 0
         self.vs_data = []
         self.vs_num_ticks = 0
@@ -103,8 +103,9 @@ class QAgent():
         self.test_action = 0
         self.num_f = 0
         self.num_features = 0
-        self.action_prev = []
-        self.action = []
+        self.action_prev = [0]
+        self.action = [0]
+        self.raw_action = [0]
         # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
@@ -113,8 +114,8 @@ class QAgent():
         print("loading pre-processing feature selection mask")
         self.mask = load(self.vs_f+'.feature_selection_mask')
         # variables for output csv files for observations and prediction
-        self.out_obs = [0]
-        self.out_act = [0]
+        self.out_obs = []
+        self.out_act = []
         # register the gym-forex openai gym environment
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
