@@ -80,6 +80,10 @@ class QAgent():
         self.max_volume = 0.1
         self.security_margin = 0.1
         self.test_action = 0
+        self.action_prev = [0]
+        self.action = [0]
+        self.raw_action = [0]
+        
         # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
