@@ -65,7 +65,6 @@ class QAgent():
         self.max_reward = 15
         self.episode_score = []
         self.episode_length = []
-        self.svr_rbf = svm.SVR(kernel='rbf')
         self.num_s = 19
         self.model = [self.svr_rbf] * self.num_s 
         self.raw_action = 0
@@ -86,7 +85,7 @@ class QAgent():
         self.action_prev = [0]
         self.action = [0]
         self.raw_action = [0]
-        
+        self.svr_rbf = []
         # load pre-processing settings 
         self.pt = preprocessing.PowerTransformer()
         print("loading pre-processing.PowerTransformer() settings for the generated dataset")
@@ -143,8 +142,8 @@ class QAgent():
     def decide_next_action(self, normalized_observation):
         # evaluate all models with the observation data window 
         self.action = []
-        self.max_index = 0 
-        action_list = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        self.max_index = 0
+        action_list = [0.0] * 10
         vs = np.array(normalized_observation)
         # read the normalized_observation skipping (num_features-1) and sum the values to compare with
         # the sum of the same sum from the validation set.
@@ -155,7 +154,7 @@ class QAgent():
         for i in range(0, num_features):
             n_p = n_p * -1
             # print("num_features= ",num_features ," len(obs)=",len(normalized_observation), "i=",i)
-            if n_p == 1:            
+            if n_p == 1:
                 a_pattern = a_pattern + normalized_observation[self.obsticks * i]
             else:
                 #print("len(normalized_observation)=",len(normalized_observation)," i=",i)
