@@ -124,55 +124,6 @@ class QAgent():
             self.max[i] = float(data[num_parts-1])
             self.min[i] = float(data[num_parts-2])
             # data was mormalized as: my_data_n[0, i] = (2.0 * (my_data[0, i] - min[i]) / (max[i] - min[i])) - 1
-        
-    def set_dcn_model(self):
-        # Deep Convolutional Neural Network for Regression
-        model = Sequential()
-        # for observation[19][48], 19 vectors of 128-dimensional vectors,input_shape = (19, 48)
-        # model.add(Dropout(0.6,input_shape=(self.num_features,self.window_size)))
-        model.add(Conv1D(48, 5, strides=2,use_bias=False, input_shape=(self.num_features,self.window_size)))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-        
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
-        model.add(Conv1D(128, 3, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
-        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(Conv1D(200, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(Conv1D(128, 3, stride=1, padding=1, use_bias=False))
-        model.add(BatchNormalization())
-        model.add(Activation('relu'))
-       
-        model.add(MaxPooling1D(pool_size=3, strides=2))
-        
-        model.add(Dense(640)) 
-        model.add(Dropout(0.2))
-        model.add(Dense(640)) 
-        model.add(Dropout(0.2))
-        model.add(Dense(256)) 
-        # multi-GPU support
-        #model = to_multi_gpu(model)
-        #self.reduce_lr = ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, min_lr=1e-4)
-        # use SGD optimizer
-        opt = Adamax(lr=self.learning_rate)
-        #opt = SGD(lr=self.learning_rate, momentum=0.9)
-        #paralell_model = multi_gpu_model(model, gpus=2)
-        paralell_model = model
-        paralell_model.compile(loss="binary_crossentropy", optimizer=opt, metrics=["accuracy"])
-        #model.compile(loss="binary_crossentropy", optimizer="adamax", metrics=["accuracy"])
-        #model.compile(loss="mse", optimizer=opt, metrics=["accuracy"])
-        return paralell_model
 
     ## the action model is the same q-datagen generated dataset
     def load_action_models(self):
@@ -217,8 +168,8 @@ class QAgent():
                     a_search = a_search * self.vs_data[i, self.obsticks * j]
             # Return all values from the action signals
             if (a_pattern == a_search):
-                # there are 19 signals and vs_num_columns - 11 is the 8th training signals
-                action_list_n = self.vs_data[i, self.vs_num_columns-11 : self.vs_num_columns].copy()
+                # there are 19 signals and vs_num_columns - 10 is the 9th training signal
+                action_list_n = self.vs_data[i, self.vs_num_columns-10 : self.vs_num_columns].copy()
                 action_list = action_list_n.tolist()
                 break
             else:
@@ -291,6 +242,7 @@ class QAgent():
         sl = 1.0
         vol  = 1.0
         
+        action_diff = self.raw_action[self.test_action] - self.action_prev[self.test_action]
         # TODO: if there is an opened order, increases de duration counter, else set it to 0
         if (order_status==0):
             self.duration = 0
@@ -300,26 +252,27 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[self.test_action] > 0):
+            if ((self.raw_action[self.test_action] < -1.0*self.th_open)) and (action_diff>0):
                 # opens buy order  
                 dire = 1.0
-            else:
+            if (self.raw_action[self.test_action] > self.th_open) and (action_diff<0):
+                # opens sell order  
                 dire = -1.0
         # if there is an existing buy order
-        if (order_status == 1) and (self.duration > self.min_duration):
-            # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[self.test_action] <= 0):
-                # closes buy order  
-                dire = -1.0
-        # if there is an existing sell order               
-        if (order_status == -1) and (self.duration > self.min_duration):
-            # if action[0]>0, closes the sell order
-            if (self.raw_action[self.test_action] > 0):
-                # closes sell order  
-                dire = 1.0 
+        #if (order_status == 1) and (self.duration > self.min_duration):
+        #    # si action[0] == 0 cierra orden de buy 
+        #    if (action_diff < 0):
+        #        # closes buy order  
+        #        dire = -1.0
+        ## if there is an existing sell order               
+        #if (order_status == -1) and (self.duration > self.min_duration):
+        #    # if action[0]>0, closes the sell order
+        #    if (action_diff > 0):
+        #        # closes sell order  
+        #        dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
         tp_a = abs(self.raw_action[self.test_action])
-        sl_a = 1-tp_a
+        sl_a = tp_a
         if (tp_a < 0.1):
             tp_a = 0.1
         if (sl_a < 0.1):
