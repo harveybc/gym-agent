@@ -1,6 +1,6 @@
 # agent_test_v7: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
 # This version uses a dynamic TP and SL depending on the length of the ñ 
-# v8 uses the first 10 signals to select the action
+# v8 uses the only the profit for buy and sell (signals 0 and 3) to determine action
 
 import gym
 import gym.wrappers
@@ -75,9 +75,9 @@ class QAgent():
         self.obsticks = 30
         # TODO: obtener min y max de actions from q-datagen dataset headers
         self.min_TP = 300
-        self.max_TP = 3000
+        self.max_TP = 10000
         self.min_SL = 300
-        self.max_SL = 3000  
+        self.max_SL = 10000  
         self.min_volume = 0.0
         self.max_volume = 0.1
         self.security_margin = 0.1
@@ -258,31 +258,31 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if ((self.raw_action[self.test_action] < -1.0*self.th_open)) and (action_diff>0):
+            if (self.raw_action[0] > self.raw_action[3]):
                 # opens buy order  
                 dire = 1.0
-            if (self.raw_action[self.test_action] > self.th_open) and (action_diff<0):
+                tp_a = abs(self.raw_action[0]-self.raw_action[3])
+            if (self.raw_action[0] <= self.raw_action[3]):
                 # opens sell order  
                 dire = -1.0
+                tp_a = abs(self.raw_action[3]-self.raw_action[0])
         # if there is an existing buy order
-        #if (order_status == 1) and (self.duration > self.min_duration):
-        #    # si action[0] == 0 cierra orden de buy 
-        #    if (action_diff < 0):
-        #        # closes buy order  
-        #        dire = -1.0
-        ## if there is an existing sell order               
-        #if (order_status == -1) and (self.duration > self.min_duration):
-        #    # if action[0]>0, closes the sell order
-        #    if (action_diff > 0):
-        #        # closes sell order  
-        #        dire = 1.0 
+        if (order_status == 1) and (self.duration > self.min_duration):
+            # si action[0] == 0 cierra orden de buy 
+            if (self.raw_action[0] <= self.raw_action[3]):
+                # closes buy order  
+                dire = -1.0
+        # if there is an existing sell order               
+        if (order_status == -1) and (self.duration > self.min_duration):
+            # if action[0]>0, closes the sell order
+            if (self.raw_action[0] > self.raw_action[3]):
+                # closes sell order  
+                dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
-        tp_a = abs(self.raw_action[self.test_action])
-        sl_a = tp_a
+        
         if (tp_a < 0.1):
             tp_a = 0.1
-        if (sl_a < 0.1):
-            sl_a = 0.1
+        sl_a = tp_a
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp_a)
