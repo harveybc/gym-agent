@@ -66,7 +66,7 @@ class QAgent():
         self.episode_score = []
         self.episode_length = []
         self.num_s = 19
-        self.model = [self.svr_rbf] * self.num_s 
+        self.model = []
         self.raw_action = 0
         self.max_index = 0
         self.vs_data = []
