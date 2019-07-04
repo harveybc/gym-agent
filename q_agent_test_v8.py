@@ -263,12 +263,12 @@ class QAgent():
                 # opens buy order  
                 dire = 1.0
                 #tp_a = abs(self.raw_action[0]-self.raw_action[3])
-                tp_a = self.max_tp/2
+                tp_a = self.max_TP/2
             if (self.raw_action[0] <= self.raw_action[3]):
                 # opens sell order  
                 dire = -1.0
                 #tp_a = abs(self.raw_action[3]-self.raw_action[0])
-                tp_a = self.max_tp/2
+                tp_a = self.max_TP/2
         # if there is an existing buy order
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
