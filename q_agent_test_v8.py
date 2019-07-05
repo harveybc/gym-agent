@@ -263,12 +263,12 @@ class QAgent():
                 # opens buy order  
                 dire = 1.0
                 #tp_a = abs(self.raw_action[0]-self.raw_action[3])
-                tp_a = self.max_TP/2
+                tp_a = 0.5
             if (self.raw_action[0] <= self.raw_action[3]):
                 # opens sell order  
                 dire = -1.0
                 #tp_a = abs(self.raw_action[3]-self.raw_action[0])
-                tp_a = self.max_TP/2
+                tp_a = 0.5
         # if there is an existing buy order
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
@@ -283,9 +283,7 @@ class QAgent():
                 dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
         
-        if (tp_a < 0.1):
-            tp_a = 0.1
-        sl_a = tp_a*2
+        sl_a = 1.0
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp_a)
