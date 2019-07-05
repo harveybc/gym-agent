@@ -285,7 +285,7 @@ class QAgent():
         
         if (tp_a < 0.1):
             tp_a = 0.1
-        sl_a = tp_a
+        sl_a = tp_a*2
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp_a)
