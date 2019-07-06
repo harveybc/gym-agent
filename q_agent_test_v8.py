@@ -258,29 +258,31 @@ class QAgent():
         # TODO: add min_duration constraint to evaluate if closing an open order with an action
         # if there is no opened order
         if order_status == 0:
-            # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[0] > self.raw_action[3]) and (self.raw_action[0]>0.0):
+            # si profit_buy > 0.2*1500 y DDbuy < 0.6*1500 y el DDbuy < DDsell compra, sino vende
+            if (self.raw_action[0] > 0.2) and (self.raw_action[1] < 0.6) and (self.raw_action[1] < self.raw_action[4]):
                 # opens buy order  
                 dire = 1.0
                 #tp_a = abs(self.raw_action[0]-self.raw_action[3])
-                tp_a = 0.5
-            if (self.raw_action[0] <= self.raw_action[3]) and (self.raw_action[3]>0.0):
+                tp_a = 0.3
+            # si profit_sell > 0.2*1500 y DDsell < 0.6*1500 y el DDsell < DDbuy compra, sino vende
+            if (self.raw_action[3] > 0.2) and (self.raw_action[4] < 0.6) and (self.raw_action[4] < self.raw_action[1]):
                 # opens sell order  
                 dire = -1.0
                 #tp_a = abs(self.raw_action[3]-self.raw_action[0])
-                tp_a = 0.5
+                tp_a = 0.3
         # if there is an existing buy order
-        if (order_status == 1) and (self.duration > self.min_duration):
-            # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[0] <= self.raw_action[3]) and (self.raw_action[3]>0):
-                # closes buy order  
-                dire = -1.0
-        # if there is an existing sell order               
-        if (order_status == -1) and (self.duration > self.min_duration):
-            # if action[0]>0, closes the sell order
-            if (self.raw_action[0] > self.raw_action[3]) and (self.raw_action[0]>0):
-                # closes sell order  
-                dire = 1.0 
+        
+        #if (order_status == 1) and (self.duration > self.min_duration):
+        #    # si action[0] == 0 cierra orden de buy 
+        #    if (self.raw_action[0] <= self.raw_action[3]) and (self.raw_action[3]>0):
+        #        # closes buy order  
+        #        dire = -1.0
+        ## if there is an existing sell order               
+        #if (order_status == -1) and (self.duration > self.min_duration):
+        #    # if action[0]>0, closes the sell order
+        #    if (self.raw_action[0] > self.raw_action[3]) and (self.raw_action[0]>0):
+        #        # closes sell order  
+        #        dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
         
         sl_a = 1.0
@@ -381,7 +383,7 @@ if __name__ == '__main__':
         print("Testing signal ",8+i)
         agent.test_action = i
         agent.load_action_models()
-        balance,score = agent.evaluate(60)
+        balance,score = agent.evaluate(600)
         scores.append(score)
         balances.append(balance)
     print("Results:")
