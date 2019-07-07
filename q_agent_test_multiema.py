@@ -274,13 +274,13 @@ class QAgent():
         
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[6] < 0) or (self.raw_action[7] < 0) or (self.raw_action[8] < 0):
+            if (self.raw_action[7] < 0) :
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
         if (order_status == -1) and (self.duration > self.min_duration):
             # if action[0]>0, closes the sell order
-            if (self.raw_action[6] > 0) or (self.raw_action[7] > 0) or (self.raw_action[8] > 0):
+            if (self.raw_action[7] > 0) :
                 # closes sell order  
                 dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
