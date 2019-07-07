@@ -254,7 +254,7 @@ class QAgent():
         if (order_status==0):
             self.duration = 0
         else:
-            self.duration = self.duration + 1
+            self.duration = self.duration + 1 
         # TODO: add min_duration constraint to evaluate if closing an open order with an action
         # if there is no opened order
         if order_status == 0:
