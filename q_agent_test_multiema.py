@@ -259,13 +259,13 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si profit_buy > 0.2*1500 y DDbuy < 0.6*1500 y el DDbuy < DDsell compra, sino vende
-            if (self.raw_action[6] > 0):
+            if (self.raw_action[6] > 0) and (self.raw_action[7] > 0) and (self.raw_action[8] > 0):
                 # opens buy order  
                 dire = 1.0
                 #tp_a = abs(self.raw_action[0]-self.raw_action[3])
                 tp_a = 0.3
             # si profit_sell > 0.2*1500if (self.raw_action[6] < 0): y DDsell < 0.6*1500 y el DDsell < DDbuy compra, sino vende
-            if (self.raw_action[6] < 0):
+            if (self.raw_action[6] < 0) and (self.raw_action[7] < 0) and (self.raw_action[8] < 0):
                 # opens sell order  
                 dire = -1.0
                 #tp_a = abs(self.raw_action[3]-self.raw_action[0])
@@ -274,13 +274,13 @@ class QAgent():
         
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
-            if (self.raw_action[6] < 0):
+            if (self.raw_action[6] < 0) or (self.raw_action[7] < 0) or (self.raw_action[8] < 0):
                 # closes buy order  
                 dire = -1.0
         # if there is an existing sell order               
         if (order_status == -1) and (self.duration > self.min_duration):
             # if action[0]>0, closes the sell order
-            if (self.raw_action[6] > 0):
+            if (self.raw_action[6] > 0) or (self.raw_action[7] > 0) or (self.raw_action[8] > 0):
                 # closes sell order  
                 dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
