@@ -360,7 +360,7 @@ class QAgent():
         plt.ylabel('value')
         plt.title('Performance')
         plt.legend()
-        fig.savefig('agent_test_8.png')
+        fig.savefig('agent_test_520.png')
         #plt.show()
         
         hist_scores.append(score)
