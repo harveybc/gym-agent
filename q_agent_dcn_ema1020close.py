@@ -373,7 +373,7 @@ class QAgent():
                 # Create the action list output [tp, sl, vol, dir]
                 action.append(tp)
                 action.append(sl)
-                action.append(vol)  
+                action.append(vol)   
                 action.append(dire)
             else:
                 self.raw_action = self.decide_next_action(normalized_observation)
