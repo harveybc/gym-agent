@@ -279,31 +279,28 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if ((self.raw_action[self.test_action] < -1.0*self.th_open)) and (action_diff>0):
+            if (self.raw_action[0] > 0):
                 # opens buy order  
                 dire = 1.0
-            if (self.raw_action[self.test_action] > self.th_open) and (action_diff<0):
+                tp_a = 0.3
+            if (self.raw_action[0] < 0):
                 # opens sell order  
                 dire = -1.0
+                tp_a = 0.3
         # if there is an existing buy order
-        #if (order_status == 1) and (self.duration > self.min_duration):
-        #    # si action[0] == 0 cierra orden de buy 
-        #    if (action_diff < 0):
-        #        # closes buy order  
-        #        dire = -1.0
-        ## if there is an existing sell order               
-        #if (order_status == -1) and (self.duration > self.min_duration):
-        #    # if action[0]>0, closes the sell order
-        #    if (action_diff > 0):
-        #        # closes sell order  
-        #        dire = 1.0 
+        if (order_status == 1) and (self.duration > self.min_duration):
+            # si action[0] == 0 cierra orden de buy 
+            if (self.raw_action[0] < 0):
+                # closes buy order  
+                dire = -1.0
+        # if there is an existing sell order               
+        if (order_status == -1) and (self.duration > self.min_duration):
+            # if action[0]>0, closes the sell order
+            if (self.raw_action[0] > 0):
+                # closes sell order  
+                dire = 1.0 
         # verify limits of sl and tp, TODO: quitar cuando estén desde fórmula
-        tp_a = abs(self.raw_action[self.test_action])
-        sl_a = tp_a
-        if (tp_a < 0.1):
-            tp_a = 0.1
-        if (sl_a < 0.1):
-            sl_a = 0.1
+        sl_a = 1.0
             
         # Create the action list output [tp, sl, vol, dir]
         act.append(tp_a)
@@ -438,7 +435,7 @@ class QAgent():
 if __name__ == '__main__':
     agent = QAgent()
     #agent.svr_rbf = agent.set_dcn_model()
-    training_signal = 9
+    training_signal = 7
     agent.load_action_models(training_signal)
     scores = []
     balances = []
