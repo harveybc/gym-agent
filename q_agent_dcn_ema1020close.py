@@ -280,11 +280,11 @@ class QAgent():
         # if there is no opened order
         if order_status == 0:
             # si el action[0] > 0, compra, sino vende
-            if (self.raw_action[0] > 0):
+            if (self.raw_action[0] > 0.3):
                 # opens buy order  
                 dire = 1.0
                 tp_a = 0.3
-            if (self.raw_action[0] < 0):
+            if (self.raw_action[0] < -0.3):
                 # opens sell order  
                 dire = -1.0
                 tp_a = 0.3
