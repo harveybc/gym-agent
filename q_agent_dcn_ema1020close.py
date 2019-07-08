@@ -283,11 +283,11 @@ class QAgent():
             if (self.raw_action[0] > 0.3):
                 # opens buy order  
                 dire = 1.0
-                tp_a = 0.3
+                tp_a = 0.1
             if (self.raw_action[0] < -0.3):
                 # opens sell order  
                 dire = -1.0
-                tp_a = 0.3
+                tp_a = 0.1
         # if there is an existing buy order
         if (order_status == 1) and (self.duration > self.min_duration):
             # si action[0] == 0 cierra orden de buy 
@@ -379,11 +379,12 @@ class QAgent():
             else:
                 self.raw_action = self.decide_next_action(normalized_observation)
                 action = self.transform_action(order_status)
+                equity.append(info['equity'])
+                balance.append(info['balance'])
             
             observation, reward, done, info = self.env_v.step(action)
             order_status=info['order_status']
-            equity.append(info['equity'])
-            balance.append(info['balance'])
+            
             
             # TODO: Hacer gráfico de balance y equity
             if (step < ((3*self.num_ticks)//4)+3) or (step > (self.vs_num_ticks-self.obsticks)):
