@@ -266,6 +266,7 @@ class QAgent():
         # initialize values for next order , dir: 1=buy, -1=sell, 0=nop
         dire = 0.0
         tp = 1.0
+        tp_a=tp
         sl = 1.0
         vol  = 1.0
         
