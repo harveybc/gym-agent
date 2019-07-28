@@ -98,7 +98,7 @@ class QAgent():
         # TODO: extraer obs_ticks como el window_size, desde los headers de  salida de q-datagen
         register(
             id='ForexValidationSet-v1',
-            entry_point='gym_forex.envs:ForexEnv6',
+            entry_point='gym_forex.envs:ForexEnv7',
             kwargs={'dataset': self.env_f ,'max_volume':self.max_volume, 'max_sl':self.max_SL, 
                     'max_tp':self.max_TP, 'min_sl':self.min_SL,
                     'min_tp':self.min_TP,'obsticks':self.obsticks, 
