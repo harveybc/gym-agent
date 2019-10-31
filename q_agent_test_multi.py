@@ -1,6 +1,7 @@
-# agent_test_v7: Uses RETURN DE MACD ADELANTADO 10 ticks(signal 8 from q-datagen_c_v4) regression signal to decide action 
-# This version uses a dynamic TP and SL depending on the length of the ñ 
-# v8 uses the only the profit for buy and sell (signals 0 and 3) to determine action
+# agent_test_multi: This agent uses the gym_forex_multi environment with 5 
+# symbols with maximum one simultaneous order per symbol.
+# It uses a testing signal from the action dataset used in the forex_multi_env,
+# this testing BUY signal is: ema10 forwarded 5 ticks minus ema20
 
 import gym
 import gym.wrappers
