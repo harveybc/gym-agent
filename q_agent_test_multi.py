@@ -27,6 +27,7 @@ import random
 ## \class QAgent
 ## \brief Q-Learning agent that uses an OpenAI gym environment for fx trading 
 ## estimating for each tick, the optimal SL, TP, and Volume.
+
 class QAgent():    
     ## init method
     ## Loads the validation dataset, loads the pre-trained models
@@ -49,12 +50,13 @@ class QAgent():
         # TODO: probar si mejora SL/TP controlados por volatilidad respecto a los mejores fijos encontrados por gridsearch
         # First argument is the validation dataset, including headers indicating maximum and minimum per feature
         self.vs_f = sys.argv[1]
+        
         # Second argument is the prefix (including path) for the dcn pre-trained models 
         # for the actions, all modes are files with .svm extention and the prefix is
         # concatenated with a number indicating the action:
         # 0 = Buy/CloseSell/nopCloseBuy
         # 1 = Sell/CloseBuy/nopCloseSell
-        # 2 = No Open Buy
+        # 2 = No Open Buy 
         # 3 = No Open Sell
         self.model_prefix = sys.argv[2]
         # third argument is the path of the datasset to be used in the gym environment (not q-datagen generated, without headers) 
@@ -230,7 +232,7 @@ class QAgent():
         #print("mask=",self.mask)
         #print("len(n_o)=",len(n_o))
         #print("len(mask)", len(self.mask))
-        n_obs=np.array(n_o)
+        n_obs = np.array(n_o)
         n_obs = n_obs[self.mask]
         return n_obs
     
