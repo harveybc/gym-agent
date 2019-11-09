@@ -49,6 +49,8 @@ class QAgent():
         # TODO: en caso ideal sin ruido, probar si ganancia incrementa con volumen controlado por volatility
         # TODO: probar si mejora SL/TP controlados por volatilidad respecto a los mejores fijos encontrados por gridsearch
         # First argument is the validation dataset, including headers indicating maximum and minimum per feature
+        
+        # TODO: adicionar parámetro para el dataset de action
         self.vs_f = sys.argv[1]
         
         # Second argument is the prefix (including path) for the dcn pre-trained models 
