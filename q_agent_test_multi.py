@@ -51,7 +51,11 @@ class QAgent():
         # First argument is the validation dataset, including headers indicating maximum and minimum per feature
         
         # TODO: adicionar parámetro para el dataset de action
-        self.vs_f = sys.argv[1]
+        # TODO:  dividir el dataset de accion y observción en training y validation
+        
+        self.a_vs_f = sys.argv[1]
+        self.o_vs_f = sys.argv[2]
+        
         
         # Second argument is the prefix (including path) for the dcn pre-trained models 
         # for the actions, all modes are files with .svm extention and the prefix is
@@ -60,9 +64,9 @@ class QAgent():
         # 1 = Sell/CloseBuy/nopCloseSell
         # 2 = No Open Buy 
         # 3 = No Open Sell
-        self.model_prefix = sys.argv[2]
-        # third argument is the path of the datasset to be used in the gym environment (not q-datagen generated, without headers) 
-        self.env_f = sys.argv[3]
+        self.model_prefix = sys.argv[3]
+        # TODO: ???????    WTF  ????????   third argument is the path of the datasset to be used in the gym environment (not q-datagen generated, without headers) 
+        self.env_f = sys.argv[4]
         # initialize gym-forex env (version 4)
         self.test_episodes = []
         self.generation = 0
